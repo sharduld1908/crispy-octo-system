@@ -2,3 +2,8 @@
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
+
+build/
+build-intermediate/
+
+.vs
