@@ -5,41 +5,49 @@
 #include "PrimeEngine/Math/Matrix4x4.h"
 
 
-namespace CharacterControl{
-namespace Events{
-struct Event_CREATE_WAYPOINT : public PE::Events::Event
-{
-	PE_DECLARE_CLASS(Event_CREATE_WAYPOINT);
+namespace CharacterControl {
+	
+	namespace Events {
 
-	// override SetLuaFunctions() since we are adding custom Lua interface
-	static void SetLuaFunctions(PE::Components::LuaEnvironment *pLuaEnv, lua_State *luaVM);
+		struct Event_CREATE_WAYPOINT : public PE::Events::Event
+		{
+			PE_DECLARE_CLASS(Event_CREATE_WAYPOINT);
 
-	// Lua interface prefixed with l_
-	static int l_Construct(lua_State* luaVM);
+			// override SetLuaFunctions() since we are adding custom Lua interface
+			static void SetLuaFunctions(PE::Components::LuaEnvironment* pLuaEnv, lua_State* luaVM);
 
-	Matrix4x4 m_base;
-	char m_name[32];
-	char m_nextWaypointName[32];
+			// Lua interface prefixed with l_
+			static int l_Construct(lua_State* luaVM);
 
-	PEUUID m_peuuid; // unique object id
-};
-}
-namespace Components {
+			Matrix4x4 m_base;
+			char m_name[32]{};
+			char m_nextWaypointName[32]{};
 
-struct WayPoint : public PE::Components::Component
-{
-	PE_DECLARE_CLASS(WayPoint);
+			PEUUID m_peuuid; // unique object id
 
-	WayPoint( PE::GameContext &context, PE::MemoryArena arena, PE::Handle hMyself, const Events::Event_CREATE_WAYPOINT *pEvt);
+		};
 
-	virtual void addDefaultComponents() ;
+	}; // Events
 
-	char m_name[32];
-	char m_nextWayPointName[32];
-	Matrix4x4 m_base;
+	namespace Components {
 
-};
-}; // namespace Components
+		struct WayPoint : public PE::Components::Component
+		{
+			PE_DECLARE_CLASS(WayPoint);
+
+			WayPoint( PE::GameContext &context, PE::MemoryArena arena, PE::Handle hMyself, const Events::Event_CREATE_WAYPOINT *pEvt);
+
+			virtual void addDefaultComponents() ;
+
+			char m_name[32];
+			char m_nextWayPointName[32];
+			Matrix4x4 m_base;
+
+		};
+
+	}; // namespace Components
+
 }; // namespace CharacterControl
+
 #endif
 

@@ -9,5 +9,6 @@ args['myScript']="WayPoint.lua"
 args['myScriptPackage']="CharacterControl"
 
 args['name'] = 'rnd7'
+args['next'] = '-99999'
 
 end -- required
