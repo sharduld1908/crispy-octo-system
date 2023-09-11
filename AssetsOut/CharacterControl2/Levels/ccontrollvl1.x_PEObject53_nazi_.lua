@@ -15,7 +15,7 @@ args['gunMeshName'] = "m98.x_m98main_mesh.mesha"
 args['gunMeshPackage'] = "CharacterControl"
 
 
-args['npcType'] = 'Guard'
+args['npcType'] = 'RandomMovementGuard'
 
 args['patrolWayPoint'] = 'rnd2'
 

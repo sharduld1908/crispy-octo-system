@@ -25,7 +25,7 @@ int Event_CreateSoldierNPC::l_Construct(lua_State* luaVM)
 	
 	// get arguments from stack
 	int numArgs, numArgsConst;
-	numArgs = numArgsConst = 19;
+	numArgs = numArgsConst = 20;
 
 	PE::GameContext *pContext = (PE::GameContext*)(lua_touserdata(luaVM, -numArgs--));
 
@@ -62,6 +62,13 @@ int Event_CreateSoldierNPC::l_Construct(lua_State* luaVM)
 		// ignore
 		numArgs--;
 
+	const char* npcType = lua_tostring(luaVM, -numArgs--);
+	if (!strcmp(npcType, "RandomMovementGuard")) {
+		pEvt->m_npcType = true;	// RandomMovement
+	}
+	else {
+		pEvt->m_npcType = false;	// Not Random Movement
+	}
 
 	// set data values before popping memory off stack
 	StringOps::writeToString(name, pEvt->m_meshFilename, 255);

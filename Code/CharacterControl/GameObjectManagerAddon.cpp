@@ -12,14 +12,14 @@ using namespace CharacterControl::Events;
 using namespace CharacterControl::Components;
 
 namespace CharacterControl{
-namespace Components
-{
-PE_IMPLEMENT_CLASS1(GameObjectManagerAddon, Component); // creates a static handle and GteInstance*() methods. still need to create construct
+	namespace Components
+	{
+		PE_IMPLEMENT_CLASS1(GameObjectManagerAddon, Component); // creates a static handle and GteInstance*() methods. still need to create construct
 
-void GameObjectManagerAddon::addDefaultComponents()
-{
-	Component::addDefaultComponents();
-}
+		void GameObjectManagerAddon::addDefaultComponents()
+		{
+			Component::addDefaultComponents();
+		}
 
-}
+	}
 }

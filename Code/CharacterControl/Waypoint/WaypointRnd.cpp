@@ -13,7 +13,7 @@ namespace CharacterControl{
 
 	namespace Events{
 
-		PE_IMPLEMENT_CLASS1(Event_CREATE_RND_WAYPOINT, PE::Events::Event);
+		PE_IMPLEMENT_CLASS1(Event_CREATE_RND_WAYPOINT, Event_CREATE_WAYPOINT);
 
 		void Event_CREATE_RND_WAYPOINT::SetLuaFunctions(PE::Components::LuaEnvironment *pLuaEnv, lua_State *luaVM)
 		{
@@ -33,9 +33,10 @@ namespace CharacterControl{
 
 			// get arguments from stack
 			int numArgs, numArgsConst;
-			numArgs = numArgsConst = 15;
+			numArgs = numArgsConst = 16;
 
 			const char* wayPointName = lua_tostring(luaVM, -numArgs--);
+			const char* numRndWaypoints = lua_tostring(luaVM, -numArgs--);
 			const char* nextWayPointName = lua_tostring(luaVM, -numArgs--);
 
 			float positionFactor = 1.0f / 100.0f;
@@ -53,6 +54,7 @@ namespace CharacterControl{
 			// set data values before popping memory off stack
 			StringOps::writeToString(wayPointName, pEvt->m_name, 32);
 			StringOps::writeToString(nextWayPointName, pEvt->m_nextWaypointName, 32);
+			pEvt->m_numRndWaypoints = std::stoi(numRndWaypoints);
 
 			lua_pop(luaVM, numArgsConst); //Second arg is a count of how many to pop
 
@@ -70,14 +72,23 @@ namespace CharacterControl{
 
 	namespace Components {
 
-		PE_IMPLEMENT_CLASS1(RndWayPoint, Component);
+		PE_IMPLEMENT_CLASS1(RndWayPoint, WayPoint);
 
 		// create waypoint form creation event
 		RndWayPoint::RndWayPoint(PE::GameContext &context, PE::MemoryArena arena, PE::Handle hMyself, const Events::Event_CREATE_RND_WAYPOINT* pEvt)
-		: Component(context, arena, hMyself)
+		: WayPoint(context, arena, hMyself, pEvt)
 		{
 			StringOps::writeToString(pEvt->m_name, m_name, 32);
 			StringOps::writeToString(pEvt->m_nextWaypointName, m_nextWayPointName, 32);
+
+			std::string str_nextWayPoints = m_nextWayPointName;
+			m_numRndWaypoints = pEvt->m_numRndWaypoints;
+			size_t first_colon = str_nextWayPoints.find_first_of(';');
+			size_t last_colon = str_nextWayPoints.find_last_of(';');
+
+			m_vecNextWayPoints.push_back(str_nextWayPoints.substr(0, first_colon));
+			m_vecNextWayPoints.push_back(str_nextWayPoints.substr(first_colon + 1, (last_colon - first_colon - 1)));
+			m_vecNextWayPoints.push_back(str_nextWayPoints.substr(last_colon + 1, (str_nextWayPoints.length() - last_colon)));
 
 			m_base = pEvt->m_base;
 		}
@@ -87,6 +98,12 @@ namespace CharacterControl{
 			Component::addDefaultComponents();
 
 			// custom methods of this component
+		}
+
+		const char* RndWayPoint::GetNextWayPoint()
+		{
+			int idx = rand() % m_vecNextWayPoints.size();
+			return m_vecNextWayPoints[idx].c_str();
 		}
 
 	}; // namespace Components

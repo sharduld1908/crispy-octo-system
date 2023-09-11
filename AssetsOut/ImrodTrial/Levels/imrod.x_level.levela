@@ -1,0 +1,6 @@
+LevelLoader.CreateGameObject("PEObject0_pPlane1",1.0, 0.0, -0.0, 0.0, 0.0, 1.0, -0.0, 0.0, -0.0, -0.0, 1.0, 0.0, -8.326546, 0.0, -4.034357, 1.0, 'imrod.x_PEObject0_pPlane.lua', 'ImrodTrial',0x3343be30, 0x50be11ee, 0xb523bcf4, 0xd4e28cd2)
+
+LevelLoader.CreateGameObject("PEObject1_TImrod",1.0, 0.0, -0.0, 0.0, 0.0, 1.0, -0.0, 0.0, -0.0, -0.0, 1.0, 0.0, 0.0, 0.0, 77.634817, 1.0, 'imrod.x_PEObject1_TImrod.lua', 'ImrodTrial',0x3468dd40, 0x50be11ee, 0xaa10bcf4, 0xd4e28cd2)
+
+LevelLoader.CreateGameObject("PEObject2_polySurface1",1.0, 0.0, -0.0, 0.0, 0.0, 1.0, -0.0, 0.0, -0.0, -0.0, 1.0, 0.0, 0.0, 179.049464, -226.316948, 1.0, 'imrod.x_PEObject2_polySu.lua', 'ImrodTrial',0x51385a40, 0x50be11ee, 0xb159bcf4, 0xd4e28cd2)
+

@@ -22,7 +22,6 @@ struct SoldierNPCBehaviorSM : public PE::Components::Component
 		PATROLLING_WAYPOINTS,
 	};
 
-
 	SoldierNPCBehaviorSM(PE::GameContext &context, PE::MemoryArena arena, PE::Handle hMyself, PE::Handle hMovementSM);
 
 	void start();
@@ -45,6 +44,7 @@ struct SoldierNPCBehaviorSM : public PE::Components::Component
 	PE::Handle m_hMovementSM;
 
 	bool m_havePatrolWayPoint;
+	bool m_random_movement;
 	char m_curPatrolWayPoint[32];
 	States m_state;
 };

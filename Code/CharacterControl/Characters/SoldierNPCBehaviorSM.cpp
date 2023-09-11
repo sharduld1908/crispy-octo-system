@@ -38,13 +38,13 @@ void SoldierNPCBehaviorSM::start()
 		m_state = IDLE; // stand in place
 
 		PE::Handle h("SoldierNPCMovementSM_Event_STOP", sizeof(SoldierNPCMovementSM_Event_STOP));
-		SoldierNPCMovementSM_Event_STOP *pEvt = new(h) SoldierNPCMovementSM_Event_STOP();
+		SoldierNPCMovementSM_Event_STOP* pEvt = new(h) SoldierNPCMovementSM_Event_STOP();
 
 		m_hMovementSM.getObject<Component>()->handleEvent(pEvt);
 		// release memory now that event is processed
 		h.release();
-		
-	}	
+
+	}
 }
 
 void SoldierNPCBehaviorSM::addDefaultComponents()
@@ -68,10 +68,17 @@ void SoldierNPCBehaviorSM::do_SoldierNPCMovementSM_Event_TARGET_REACHED(PE::Even
 		{
 			// search for waypoint object
 			WayPoint *pWP = pGameObjectManagerAddon->getWayPoint(m_curPatrolWayPoint);
+
 			if (pWP && StringOps::length(pWP->m_nextWayPointName) > 0)
 			{
 				// have next waypoint to go to
-				pWP = pGameObjectManagerAddon->getWayPoint(pWP->m_nextWayPointName);
+				if (m_random_movement) {
+					pWP = pGameObjectManagerAddon->getWayPoint(((RndWayPoint*)pWP)->GetNextWayPoint());
+				}
+				else {
+					pWP = pGameObjectManagerAddon->getWayPoint(pWP->m_nextWayPointName);
+				}
+				
 				if (pWP)
 				{
 					StringOps::writeToString(pWP->m_name, m_curPatrolWayPoint, 32);
@@ -144,6 +151,7 @@ void SoldierNPCBehaviorSM::do_UPDATE(PE::Events::Event *pEvt)
 			if (pGameObjectManagerAddon)
 			{
 				// search for waypoint object
+				
 				WayPoint *pWP = pGameObjectManagerAddon->getWayPoint(m_curPatrolWayPoint);
 				if (pWP)
 				{

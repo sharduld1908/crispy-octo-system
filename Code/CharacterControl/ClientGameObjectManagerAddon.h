@@ -5,6 +5,7 @@
 #include "Events/Events.h"
 
 #include "Waypoint/WayPoint.h"
+#include "Waypoint/WayPointRnd.h"
 
 namespace CharacterControl
 {
@@ -29,6 +30,9 @@ struct ClientGameObjectManagerAddon : public GameObjectManagerAddon
 
 	PE_DECLARE_IMPLEMENT_EVENT_HANDLER_WRAPPER(do_CREATE_WAYPOINT);
 	virtual void do_CREATE_WAYPOINT(PE::Events::Event *pEvt);
+
+	PE_DECLARE_IMPLEMENT_EVENT_HANDLER_WRAPPER(do_CREATE_RND_WAYPOINT);
+	virtual void do_CREATE_RND_WAYPOINT(PE::Events::Event* pEvt);
 
 	//will activate tank when local client is connected
 	PE_DECLARE_IMPLEMENT_EVENT_HANDLER_WRAPPER(do_SERVER_CLIENT_CONNECTION_ACK);

@@ -24,7 +24,8 @@ function runScript(args)
         v[1], v[2], v[3],
         n[1], n[2], n[3],
         args['peuuid'],
-        args['patrolWayPoint'] -- could be nil
+        args['patrolWayPoint'], -- could be nil
+        args['npcType']
     )
     handler = getGameObjectManagerHandle(l_getGameContext())
     root.PE.Components.Component.SendEventToHandle(handler, evt)

@@ -499,7 +499,7 @@ os.system("XbCp test")
 components.InitAdditionalActionMap()
 
 root = Tk(className='PyClient')
-root.geometry("920x600")
+root.geometry("900x700")
 
 app = PyClient(root)
 

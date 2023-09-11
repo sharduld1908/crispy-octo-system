@@ -4,6 +4,7 @@
 
 #include "Characters/SoldierNPC.h"
 #include "Waypoint/WayPoint.h"
+#include "Waypoint/WayPointRnd.h"
 #include "Tank/ClientTank.h"
 #include "CharacterControl/Client/ClientSpaceShip.h"
 
@@ -23,6 +24,7 @@ void ClientGameObjectManagerAddon::addDefaultComponents()
 
 	PE_REGISTER_EVENT_HANDLER(Event_CreateSoldierNPC, ClientGameObjectManagerAddon::do_CreateSoldierNPC);
 	PE_REGISTER_EVENT_HANDLER(Event_CREATE_WAYPOINT, ClientGameObjectManagerAddon::do_CREATE_WAYPOINT);
+	PE_REGISTER_EVENT_HANDLER(Event_CREATE_RND_WAYPOINT, ClientGameObjectManagerAddon::do_CREATE_RND_WAYPOINT);
 
 	// note this component (game obj addon) is added to game object manager after network manager, so network manager will process this event first
 	PE_REGISTER_EVENT_HANDLER(PE::Events::Event_SERVER_CLIENT_CONNECTION_ACK, ClientGameObjectManagerAddon::do_SERVER_CLIENT_CONNECTION_ACK);
@@ -78,6 +80,21 @@ void ClientGameObjectManagerAddon::do_CREATE_WAYPOINT(PE::Events::Event *pEvt)
 
 	PE::Handle hWayPoint("WayPoint", sizeof(WayPoint));
 	WayPoint *pWayPoint = new(hWayPoint) WayPoint(*m_pContext, m_arena, hWayPoint, pTrueEvent);
+	pWayPoint->addDefaultComponents();
+
+	addComponent(hWayPoint);
+}
+
+void ClientGameObjectManagerAddon::do_CREATE_RND_WAYPOINT(PE::Events::Event* pEvt)
+{
+	PEINFO("GameObjectManagerAddon::do_CREATE_RND_WAYPOINT()\n");
+
+	assert(pEvt->isInstanceOf<Event_CREATE_RND_WAYPOINT>());
+
+	Event_CREATE_RND_WAYPOINT* pTrueEvent = (Event_CREATE_RND_WAYPOINT*)(pEvt);
+
+	PE::Handle hWayPoint("RndWayPoint", sizeof(WayPoint));
+	RndWayPoint* pWayPoint = new(hWayPoint) RndWayPoint(*m_pContext, m_arena, hWayPoint, pTrueEvent);
 	pWayPoint->addDefaultComponents();
 
 	addComponent(hWayPoint);

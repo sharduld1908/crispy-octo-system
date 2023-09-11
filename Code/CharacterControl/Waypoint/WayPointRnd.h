@@ -1,14 +1,18 @@
 #ifndef _CHARACTER_CONTROL_WAYPOINT_RND_NPC_
 #define _CHARACTER_CONTROL_WAYPOINT_RND_NPC_
 
+#include <vector>
+#include <string>
+
 #include "PrimeEngine/Events/Component.h"
 #include "PrimeEngine/Math/Matrix4x4.h"
+#include "WayPoint.h"
 
 namespace CharacterControl {
 	
 	namespace Events {
 
-		struct Event_CREATE_RND_WAYPOINT : public PE::Events::Event
+		struct Event_CREATE_RND_WAYPOINT : public Event_CREATE_WAYPOINT
 		{
 			PE_DECLARE_CLASS(Event_CREATE_RND_WAYPOINT);
 
@@ -18,11 +22,7 @@ namespace CharacterControl {
 			// Lua interface prefixed with l_
 			static int l_Construct(lua_State* luaVM);
 
-			Matrix4x4 m_base;
-			char m_name[32]{};
-			char m_nextWaypointName[32]{};
-
-			PEUUID m_peuuid; // unique object id
+			int m_numRndWaypoints{};
 
 		};
 
@@ -30,17 +30,18 @@ namespace CharacterControl {
 
 	namespace Components {
 
-		struct RndWayPoint : public PE::Components::Component
+		struct RndWayPoint : public WayPoint
 		{
 			PE_DECLARE_CLASS(RndWayPoint);
 
 			RndWayPoint( PE::GameContext &context, PE::MemoryArena arena, PE::Handle hMyself, const Events::Event_CREATE_RND_WAYPOINT *pEvt);
 
-			virtual void addDefaultComponents() ;
+			virtual void addDefaultComponents();
 
-			char m_name[32];
-			char m_nextWayPointName[32];
-			Matrix4x4 m_base;
+			const char* GetNextWayPoint();
+
+			std::vector<std::string> m_vecNextWayPoints;
+			int m_numRndWaypoints{};
 
 		};
 

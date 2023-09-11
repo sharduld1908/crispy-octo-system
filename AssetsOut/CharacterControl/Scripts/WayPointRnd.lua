@@ -16,6 +16,7 @@ function runScript(args)
 
     evt = root.CharacterControl.Events.Event_CREATE_RND_WAYPOINT.Construct(
         args['name'],
+        args['numWPs'],
         args['next'],
         pos[1], pos[2], pos[3],
         u[1], u[2], u[3],

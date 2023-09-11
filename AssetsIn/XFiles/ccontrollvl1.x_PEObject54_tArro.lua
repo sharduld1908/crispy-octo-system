@@ -9,6 +9,7 @@ args['myScript']="WayPointRnd.lua"
 args['myScriptPackage']="CharacterControl"
 
 args['name'] = 'rnd6'
-args['next'] = 'rnd1'
+args['numWPs'] = '3'
+args['next'] = 'rnd1;rnd3;rnd5'
 
 end -- required

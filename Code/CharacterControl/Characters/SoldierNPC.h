@@ -8,17 +8,17 @@
 
 namespace CharacterControl{
 
-namespace Components {
+	namespace Components {
 
-struct SoldierNPC : public PE::Components::Component
-{
-	PE_DECLARE_CLASS(SoldierNPC);
+		struct SoldierNPC : public PE::Components::Component
+		{
+			PE_DECLARE_CLASS(SoldierNPC);
 
-	SoldierNPC(PE::GameContext &context, PE::MemoryArena arena, PE::Handle hMyself, Events::Event_CreateSoldierNPC *pEvt);
+			SoldierNPC(PE::GameContext &context, PE::MemoryArena arena, PE::Handle hMyself, Events::Event_CreateSoldierNPC *pEvt);
 
-	virtual void addDefaultComponents();
-};
-}; // namespace Components
+			virtual void addDefaultComponents();
+		};
+	}; // namespace Components
 }; // namespace CharacterControl
 #endif
 
