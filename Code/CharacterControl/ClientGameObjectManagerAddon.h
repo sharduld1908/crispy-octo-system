@@ -4,7 +4,7 @@
 #include "GameObjectMangerAddon.h"
 #include "Events/Events.h"
 
-#include "WayPoint.h"
+#include "Waypoint/WayPoint.h"
 
 namespace CharacterControl
 {

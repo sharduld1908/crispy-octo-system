@@ -2,7 +2,7 @@
 
 #include "GlobalRegistry.h"
 
-#include "WayPoint.h"
+#include "Waypoint/WayPoint.h"
 #include "Characters/SoldierNPC.h"
 #include "Characters/SoldierNPCAnimationSM.h"
 #include "Characters/SoldierNPCMovementSM.h"
@@ -47,8 +47,8 @@ void CharacterControl::Register(PE::Components::LuaEnvironment *pLuaEnv, PE::Glo
 				TankController::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 				TankGameControls::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 				GameObjectManagerAddon::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-					ClientGameObjectManagerAddon::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-					ServerGameObjectManagerAddon::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+				ClientGameObjectManagerAddon::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+				ServerGameObjectManagerAddon::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 				ClientSpaceShip::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 				SpaceShipGameControls::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 			}

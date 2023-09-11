@@ -3,7 +3,7 @@
 #include "PrimeEngine/PrimeEngineIncludes.h"
 
 #include "Characters/SoldierNPC.h"
-#include "WayPoint.h"
+#include "Waypoint/WayPoint.h"
 #include "Tank/ClientTank.h"
 #include "CharacterControl/Client/ClientSpaceShip.h"
 

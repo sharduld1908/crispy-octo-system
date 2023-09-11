@@ -8,7 +8,7 @@ function fillMetaInfoTable(args) -- the script fromat requires existance of this
 args['myScript']="WayPoint.lua"
 args['myScriptPackage']="CharacterControl"
 
-args['name'] = 'rnd4'
-args['next'] = '-99999'
+args['name'] = 'rnd3'
+args['next'] = 'rnd4'
 
 end -- required
