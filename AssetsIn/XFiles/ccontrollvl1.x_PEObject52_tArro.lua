@@ -5,7 +5,7 @@
 function fillMetaInfoTable(args) -- the script fromat requires existance of this function
 
 -- user modifed data
-args['myScript']="WayPoint.lua"
+args['myScript']="WayPointRnd.lua"
 args['myScriptPackage']="CharacterControl"
 
 args['name'] = 'rnd2'

@@ -2,22 +2,6 @@
 
 #include "GlobalRegistry.h"
 
-#include "Waypoint/WayPoint.h"
-#include "Characters/SoldierNPC.h"
-#include "Characters/SoldierNPCAnimationSM.h"
-#include "Characters/SoldierNPCMovementSM.h"
-#include "Characters/SoldierNPCBehaviorSM.h"
-#include "Events/Events.h"
-#include "GameObjectMangerAddon.h"
-#include "ClientGameObjectManagerAddon.h"
-#include "ServerGameObjectManagerAddon.h"
-#include "ClientCharacterControlGame.h"
-#include "ServerCharacterControlGame.h"
-#include "Tank/ClientTank.h"
-#include "CharacterControl/Client/ClientSpaceShip.h"
-#include "CharacterControl/Client/ClientSpaceShipControls.h"
-
-
 using namespace PE::Components;
 using namespace CharacterControl::Components;
 using namespace CharacterControl::Events;
@@ -40,6 +24,7 @@ void CharacterControl::Register(PE::Components::LuaEnvironment *pLuaEnv, PE::Glo
 			// start root.CharacterControl.Components
 			{
 				WayPoint::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+				RndWayPoint::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 				SoldierNPC::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 				SoldierNPCAnimationSM::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 				SoldierNPCMovementSM::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
@@ -61,6 +46,7 @@ void CharacterControl::Register(PE::Components::LuaEnvironment *pLuaEnv, PE::Glo
 			{
 				Event_CreateSoldierNPC::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 				Event_CREATE_WAYPOINT::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+				Event_CREATE_RND_WAYPOINT::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 				SoldierNPCAnimSM_Event_STOP::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 				SoldierNPCAnimSM_Event_WALK::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 				SoldierNPCMovementSM_Event_MOVE_TO::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
