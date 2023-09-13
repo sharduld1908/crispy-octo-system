@@ -16,7 +16,6 @@ args['gunMeshPackage'] = "CharacterControl"
 
 
 args['npcType'] = 'RandomMovementGuard'
-
 args['patrolWayPoint'] = 'rnd2'
 
 end -- required

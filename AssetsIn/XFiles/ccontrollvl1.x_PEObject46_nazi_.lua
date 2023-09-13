@@ -14,9 +14,8 @@ args['skinPackage'] = "Soldier"
 args['gunMeshName'] = "m98.x_m98main_mesh.mesha"
 args['gunMeshPackage'] = "CharacterControl"
 
-
-args['npcType'] = 'Guard'
-
+args['npcType'] = 'shooter'
 args['patrolWayPoint'] = '11'
+args['target_name'] = 'target'
 
 end -- required

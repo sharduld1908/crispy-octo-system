@@ -1,9 +1,9 @@
 #ifndef _CHARACTER_CONTROL_SOLDIER_NPC_
 #define _CHARACTER_CONTROL_SOLDIER_NPC_
 
+#include <string>
+
 #include "PrimeEngine/Events/Component.h"
-
-
 #include "../Events/Events.h"
 
 namespace CharacterControl{
@@ -17,8 +17,12 @@ namespace CharacterControl{
 			SoldierNPC(PE::GameContext &context, PE::MemoryArena arena, PE::Handle hMyself, Events::Event_CreateSoldierNPC *pEvt);
 
 			virtual void addDefaultComponents();
+
+			std::string m_npcType;
 		};
+
 	}; // namespace Components
+
 }; // namespace CharacterControl
 #endif
 

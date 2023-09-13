@@ -62,13 +62,7 @@ int Event_CreateSoldierNPC::l_Construct(lua_State* luaVM)
 		// ignore
 		numArgs--;
 
-	const char* npcType = lua_tostring(luaVM, -numArgs--);
-	if (!strcmp(npcType, "RandomMovementGuard")) {
-		pEvt->m_npcType = true;	// RandomMovement
-	}
-	else {
-		pEvt->m_npcType = false;	// Not Random Movement
-	}
+	pEvt->m_npcType = lua_tostring(luaVM, -numArgs--);
 
 	// set data values before popping memory off stack
 	StringOps::writeToString(name, pEvt->m_meshFilename, 255);

@@ -121,6 +121,27 @@ WayPoint *ClientGameObjectManagerAddon::getWayPoint(const char *name)
 	return NULL;
 }
 
+SoldierNPC* ClientGameObjectManagerAddon::getTargetSoldier(const char* name)
+{
+	PE::Handle* pHC = m_components.getFirstPtr();
+
+	for (PrimitiveTypes::UInt32 i = 0; i < m_components.m_size; i++, pHC++) // fast array traversal (increasing ptr)
+	{
+		Component* pC = (*pHC).getObject<Component>();
+
+		if (pC->isInstanceOf<SoldierNPC>())
+		{
+			SoldierNPC* ptarget = (SoldierNPC*)(pC);
+			if (StringOps::strcmp(ptarget->m_npcType.c_str(), name) == 0)
+			{
+				// equal strings, found our waypoint
+				return ptarget;
+			}
+		}
+	}
+	return nullptr;
+}
+
 
 void ClientGameObjectManagerAddon::createTank(int index, int &threadOwnershipMask)
 {

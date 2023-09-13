@@ -19,8 +19,12 @@ namespace CharacterControl{
 		PE_IMPLEMENT_CLASS1(SoldierNPCMovementSM_Event_MOVE_TO, Event);
 
 		SoldierNPCMovementSM_Event_MOVE_TO::SoldierNPCMovementSM_Event_MOVE_TO(Vector3 targetPos /* = Vector3 */)
-		: m_targetPosition(targetPos)
-		{ }
+		: m_targetPosition(targetPos) {}
+
+		PE_IMPLEMENT_CLASS1(SoldierNPCMovementSM_Event_STAND_SHOOT, Event);
+
+		SoldierNPCMovementSM_Event_STAND_SHOOT::SoldierNPCMovementSM_Event_STAND_SHOOT(Vector3 targetPos /* = Vector3 */)
+			: m_targetPosition(targetPos) {}
 
 		PE_IMPLEMENT_CLASS1(SoldierNPCMovementSM_Event_STOP, Event);
 
@@ -55,7 +59,7 @@ namespace CharacterControl{
 
 			PE_REGISTER_EVENT_HANDLER(SoldierNPCMovementSM_Event_MOVE_TO, SoldierNPCMovementSM::do_SoldierNPCMovementSM_Event_MOVE_TO);
 			PE_REGISTER_EVENT_HANDLER(SoldierNPCMovementSM_Event_STOP, SoldierNPCMovementSM::do_SoldierNPCMovementSM_Event_STOP);
-	
+			PE_REGISTER_EVENT_HANDLER(SoldierNPCMovementSM_Event_STAND_SHOOT, SoldierNPCMovementSM::do_SoldierNPCMovementSM_Event_STAND_SHOOT);
 			PE_REGISTER_EVENT_HANDLER(Event_UPDATE, SoldierNPCMovementSM::do_UPDATE);
 		}
 
@@ -79,6 +83,18 @@ namespace CharacterControl{
 			h.release();
 		}
 
+		void SoldierNPCMovementSM::do_SoldierNPCMovementSM_Event_STAND_SHOOT(PE::Events::Event* pEvt)
+		{
+			m_state = SHOOTING;
+
+			SceneNode* pSN = getParentsSceneNode();
+			Vector3 curPosition = pSN->m_base.getPos();
+			Vector3 rotate_position = (((SoldierNPCMovementSM_Event_STAND_SHOOT*)pEvt)->m_targetPosition) - curPosition;
+
+			rotate_position.normalize();
+			pSN->m_base.turnInDirection(rotate_position, 3.1415f);
+		}
+
 		void SoldierNPCMovementSM::do_SoldierNPCMovementSM_Event_STOP(PE::Events::Event *pEvt)
 		{
 			Events::SoldierNPCAnimSM_Event_STOP Evt;
@@ -89,6 +105,8 @@ namespace CharacterControl{
 
 		void SoldierNPCMovementSM::do_UPDATE(PE::Events::Event *pEvt)
 		{
+			OutputDebugString(L"In Movement Update\n");
+
 			if (m_state == WALKING_TO_TARGET)
 			{
 				// see if parent has scene node component
@@ -153,6 +171,18 @@ namespace CharacterControl{
 						}
 					}
 				}
+			}
+			else if (m_state == SHOOTING) {
+
+				PE::Handle h("SoldierNPCAnimSM_Event_STAND_SHOOT", sizeof(SoldierNPCAnimSM_Event_STAND_SHOOT));
+				SoldierNPCAnimSM_Event_STAND_SHOOT* pEvt = new(h) SoldierNPCAnimSM_Event_STAND_SHOOT();
+
+				SoldierNPC* currSoldier = getFirstParentByTypePtr<SoldierNPC>();
+				currSoldier->getFirstComponent<PE::Components::SceneNode>()->handleEvent(pEvt);
+
+				// release memory now that event is processed
+				h.release();
+
 			}
 		}
 
