@@ -15,8 +15,9 @@ namespace CharacterControl{
 		struct SoldierNPCMovementSM_Event_MOVE_TO : public PE::Events::Event {
 			PE_DECLARE_CLASS(SoldierNPCMovementSM_Event_MOVE_TO);
 
-			SoldierNPCMovementSM_Event_MOVE_TO(Vector3 targetPos = Vector3());
+			SoldierNPCMovementSM_Event_MOVE_TO(Vector3 targetPos = Vector3(), bool hasToRun = false);
 			Vector3 m_targetPosition;
+			bool m_hasToRun;
 		};
 
 		// Sent by Behaviour state machine to start shooting.

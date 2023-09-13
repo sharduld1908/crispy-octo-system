@@ -86,8 +86,16 @@ namespace CharacterControl {
 							StringOps::writeToString(pWP->m_name, m_curPatrolWayPoint, 32);
 
 							m_state = PATROLLING_WAYPOINTS;
+
+							bool run_forrest_run = false;
+							if (m_duty == GAURD) {
+								run_forrest_run = (rand() % 2);
+								//OutputDebugStringA("This time the soldier has chosen to ");
+								//OutputDebugStringA(run_forrest_run ? "Running\n" : "Walking\n");
+							}
+
 							PE::Handle h("SoldierNPCMovementSM_Event_MOVE_TO", sizeof(SoldierNPCMovementSM_Event_MOVE_TO));
-							Events::SoldierNPCMovementSM_Event_MOVE_TO *pEvt = new(h) SoldierNPCMovementSM_Event_MOVE_TO(pWP->m_base.getPos());
+							Events::SoldierNPCMovementSM_Event_MOVE_TO *pEvt = new(h) SoldierNPCMovementSM_Event_MOVE_TO(pWP->m_base.getPos(), run_forrest_run);
 
 							m_hMovementSM.getObject<Component>()->handleEvent(pEvt);
 							// release memory now that event is processed

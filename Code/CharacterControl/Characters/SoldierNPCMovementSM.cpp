@@ -18,12 +18,12 @@ namespace CharacterControl{
 
 		PE_IMPLEMENT_CLASS1(SoldierNPCMovementSM_Event_MOVE_TO, Event);
 
-		SoldierNPCMovementSM_Event_MOVE_TO::SoldierNPCMovementSM_Event_MOVE_TO(Vector3 targetPos /* = Vector3 */)
-		: m_targetPosition(targetPos) {}
+		SoldierNPCMovementSM_Event_MOVE_TO::SoldierNPCMovementSM_Event_MOVE_TO(Vector3 targetPos /* = Vector3() */, bool hasToRun)
+		: m_targetPosition(targetPos), m_hasToRun(hasToRun) {}
 
 		PE_IMPLEMENT_CLASS1(SoldierNPCMovementSM_Event_STAND_SHOOT, Event);
 
-		SoldierNPCMovementSM_Event_STAND_SHOOT::SoldierNPCMovementSM_Event_STAND_SHOOT(Vector3 targetPos /* = Vector3 */)
+		SoldierNPCMovementSM_Event_STAND_SHOOT::SoldierNPCMovementSM_Event_STAND_SHOOT(Vector3 targetPos /* = Vector3() */)
 			: m_targetPosition(targetPos) {}
 
 		PE_IMPLEMENT_CLASS1(SoldierNPCMovementSM_Event_STOP, Event);
@@ -68,19 +68,32 @@ namespace CharacterControl{
 			SoldierNPCMovementSM_Event_MOVE_TO *pRealEvt = (SoldierNPCMovementSM_Event_MOVE_TO *)(pEvt);
 	
 			// change state of this state machine
-			m_state = WALKING_TO_TARGET;
+			m_state = ((SoldierNPCMovementSM_Event_MOVE_TO*)pEvt)->m_hasToRun ? RUNNING_TO_TARGET : WALKING_TO_TARGET;
 			m_targetPostion = pRealEvt->m_targetPosition;
 
 			// make sure the animations are playing
-	
-			PE::Handle h("SoldierNPCAnimSM_Event_WALK", sizeof(SoldierNPCAnimSM_Event_WALK));
-			Events::SoldierNPCAnimSM_Event_WALK *pOutEvt = new(h) SoldierNPCAnimSM_Event_WALK();
-	
-			SoldierNPC *pSol = getFirstParentByTypePtr<SoldierNPC>();
-			pSol->getFirstComponent<PE::Components::SceneNode>()->handleEvent(pOutEvt);
+			if (m_state == WALKING_TO_TARGET) {
 
-			// release memory now that event is processed
-			h.release();
+				PE::Handle h("SoldierNPCAnimSM_Event_WALK", sizeof(SoldierNPCAnimSM_Event_WALK));
+				Events::SoldierNPCAnimSM_Event_WALK* pOutEvt = new(h) SoldierNPCAnimSM_Event_WALK();
+
+				SoldierNPC* pSol = getFirstParentByTypePtr<SoldierNPC>();
+				pSol->getFirstComponent<PE::Components::SceneNode>()->handleEvent(pOutEvt);
+
+				// release memory now that event is processed
+				h.release();
+			}
+			else if (m_state == RUNNING_TO_TARGET) {
+
+				PE::Handle h("SoldierNPCAnimSM_Event_RUN", sizeof(SoldierNPCAnimSM_Event_RUN));
+				Events::SoldierNPCAnimSM_Event_RUN* pOutEvt = new(h) SoldierNPCAnimSM_Event_RUN();
+
+				SoldierNPC* pSol = getFirstParentByTypePtr<SoldierNPC>();
+				pSol->getFirstComponent<PE::Components::SceneNode>()->handleEvent(pOutEvt);
+
+				// release memory now that event is processed
+				h.release();
+			}
 		}
 
 		void SoldierNPCMovementSM::do_SoldierNPCMovementSM_Event_STAND_SHOOT(PE::Events::Event* pEvt)
@@ -105,9 +118,8 @@ namespace CharacterControl{
 
 		void SoldierNPCMovementSM::do_UPDATE(PE::Events::Event *pEvt)
 		{
-			OutputDebugString(L"In Movement Update\n");
 
-			if (m_state == WALKING_TO_TARGET)
+			if (m_state == WALKING_TO_TARGET || m_state == RUNNING_TO_TARGET)
 			{
 				// see if parent has scene node component
 				SceneNode *pSN = getParentsSceneNode();
@@ -121,7 +133,8 @@ namespace CharacterControl{
 					{
 						// not at the spot yet
 						Event_UPDATE *pRealEvt = (Event_UPDATE *)(pEvt);
-						static float speed = 1.4f;
+						float speed = (m_state == WALKING_TO_TARGET) ? 1.4f : 2.0f;
+
 						float allowedDisp = speed * pRealEvt->m_frameTime;
 
 						Vector3 dir = (m_targetPostion - curPos);
