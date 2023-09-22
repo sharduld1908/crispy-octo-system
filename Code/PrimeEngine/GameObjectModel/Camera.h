@@ -13,30 +13,31 @@
 // Sibling/Children includes
 
 namespace PE {
-namespace Components {
+	namespace Components {
 
-struct Camera : public Component
-{
-	PE_DECLARE_CLASS(Camera);
+		struct Camera : public Component
+		{
+			PE_DECLARE_CLASS(Camera);
 
 
-	// Constructor -------------------------------------------------------------
-	// when created in a scene node
-	Camera(PE::GameContext &context, PE::MemoryArena arena, Handle hMyself, Handle hParentSpaceSceneNode);
-	virtual ~Camera(){}
+			// Constructor -------------------------------------------------------------
+			// when created in a scene node
+			Camera(PE::GameContext &context, PE::MemoryArena arena, Handle hMyself, Handle hParentSpaceSceneNode);
+			virtual ~Camera(){}
 
-	CameraSceneNode *getCamSceneNode()
-	{
-		return m_hCameraSceneNode.getObject<CameraSceneNode>();
-	}
+			CameraSceneNode *getCamSceneNode()
+			{
+				return m_hCameraSceneNode.getObject<CameraSceneNode>();
+			}
 
-	// Component ------------------------------------------------------------
-	//virtual void handleEvent(Events::Event *pEvt);
+			// Component ------------------------------------------------------------
+			//virtual void handleEvent(Events::Event *pEvt);
 
-	// Individual events -------------------------------------------------------
-	Handle m_hCameraSceneNode;
-};
-}; // namespace Components
+			// Individual events -------------------------------------------------------
+			Handle m_hCameraSceneNode;
+		};
+
+	}; // namespace Components
 }; // namespace PE
 
 #endif

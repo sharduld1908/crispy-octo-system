@@ -14,27 +14,27 @@
 
 namespace PE {
 
-namespace Events {
+	namespace Events {
 
-struct Event_FLY_CAMERA : public Event {
-	PE_DECLARE_CLASS(Event_FLY_CAMERA);
+		struct Event_FLY_CAMERA : public Event {
+			PE_DECLARE_CLASS(Event_FLY_CAMERA);
 
-	Event_FLY_CAMERA(){}
-	virtual ~Event_FLY_CAMERA(){}
+			Event_FLY_CAMERA() {}
+			virtual ~Event_FLY_CAMERA() {}
 
-	Vector3 m_relativeMove;
-};
+			Vector3 m_relativeMove;
+		};
 
-struct Event_ROTATE_CAMERA : public Event {
-	PE_DECLARE_CLASS(Event_ROTATE_CAMERA);
+		struct Event_ROTATE_CAMERA : public Event {
+			PE_DECLARE_CLASS(Event_ROTATE_CAMERA);
 
-	Event_ROTATE_CAMERA() {}
-	virtual ~Event_ROTATE_CAMERA(){}
+			Event_ROTATE_CAMERA() {}
+			virtual ~Event_ROTATE_CAMERA() {}
 
-	Vector3 m_relativeRotate; //2D screenspace rotate
-};
+			Vector3 m_relativeRotate; //2D screenspace rotate
+		};
 
-}; // namespace Events
+	}; // namespace Events
 }; // namespace PE
 
 #endif

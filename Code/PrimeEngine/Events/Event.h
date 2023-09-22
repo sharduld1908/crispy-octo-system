@@ -20,66 +20,67 @@
 struct lua_State;
 
 namespace PE {
-namespace Events {
 
-enum EventReturnCodes
-{
-	DEFAULT = 0,
-	STOP_DISTRIBUTION = 1,
-};
-// Represents event. Has a handle to data specific to an event
-struct Event : public PEClass
-{
-	PE_DECLARE_CLASS(Event);
+	namespace Events {
 
-	// meta methods: wrap around MetaInfo methods
-	int getClassId() { return getClassMetaInfo()->m_classId; }
-	const char *getClassName() { return getClassMetaInfo()->getClassName(); }
+		enum EventReturnCodes
+		{
+			DEFAULT = 0,
+			STOP_DISTRIBUTION = 1,
+		};
+		// Represents event. Has a handle to data specific to an event
+		struct Event : public PEClass
+		{
+			PE_DECLARE_CLASS(Event);
 
-	template <typename T>
-	bool isInstanceOf() {
-		return getClassMetaInfo()->isSubClassOf(T::s_metaInfo.m_classId);
-	}
+			// meta methods: wrap around MetaInfo methods
+			int getClassId() { return getClassMetaInfo()->m_classId; }
+			const char* getClassName() { return getClassMetaInfo()->getClassName(); }
 
-	bool isInstanceOf(int classId) {
-		return getClassMetaInfo()->isSubClassOf(classId);
-	}
+			template <typename T>
+			bool isInstanceOf() {
+				return getClassMetaInfo()->isSubClassOf(T::s_metaInfo.m_classId);
+			}
 
-	void printClassHierarchy()
-	{
-		return getClassMetaInfo()->printClassHierarchy();
-	}
+			bool isInstanceOf(int classId) {
+				return getClassMetaInfo()->isSubClassOf(classId);
+			}
 
-	Event()
-	{
-		m_returnCode = DEFAULT;
-		m_cancelSiblingAndChildEventHandling = false;
-		m_networkClientId = -1;
-	}
-	virtual ~Event(){}
-	
-	// call this when an event is not used anymore
-	void releaseEventData()
-	{
-		m_dataHandle.release();
-	}
+			void printClassHierarchy()
+			{
+				return getClassMetaInfo()->printClassHierarchy();
+			}
 
-	PrimitiveTypes::Bool hasValidData()
-	{
-		return m_dataHandle.isValid();
-	}
+			Event()
+			{
+				m_returnCode = DEFAULT;
+				m_cancelSiblingAndChildEventHandling = false;
+				m_networkClientId = -1;
+			}
+			virtual ~Event() {}
 
-	PEUUID m_evtTypePEUUID;
-	PrimitiveTypes::UInt32 m_returnCode;
-	Handle m_target; // what object this is meant for
-	Handle m_lastDistributor; // last event handler in the event handling chain
-	Handle m_prevDistributor;
-	Handle m_dataHandle;
-	bool m_cancelSiblingAndChildEventHandling;
-	int m_networkClientId; // in case on server, this id will be which client it came from
-};
+			// call this when an event is not used anymore
+			void releaseEventData()
+			{
+				m_dataHandle.release();
+			}
 
+			PrimitiveTypes::Bool hasValidData()
+			{
+				return m_dataHandle.isValid();
+			}
 
-}; // namespace Events
+			PEUUID m_evtTypePEUUID;
+			PrimitiveTypes::UInt32 m_returnCode;
+			Handle m_target; // what object this is meant for
+			Handle m_lastDistributor; // last event handler in the event handling chain
+			Handle m_prevDistributor;
+			Handle m_dataHandle;
+			bool m_cancelSiblingAndChildEventHandling;
+			int m_networkClientId; // in case on server, this id will be which client it came from
+		};
+
+	}; // namespace Events
+
 }; // napespace PE
 #endif

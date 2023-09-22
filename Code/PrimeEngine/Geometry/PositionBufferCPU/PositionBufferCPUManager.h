@@ -22,44 +22,47 @@
 #include "PositionBufferCPU.h"
 namespace PE {
 
-struct PositionBufferCPUManager : PE::PEAllocatableAndDefragmentable
-{
-	PositionBufferCPUManager(PE::GameContext &context, PE::MemoryArena arena);
-
-	static void Construct(PE::GameContext &context, PE::MemoryArena arena)
+	struct PositionBufferCPUManager : PE::PEAllocatableAndDefragmentable
 	{
-		s_myHandle = Handle("VERTEX_BUFFER_CPU_MANAGER", sizeof(PositionBufferCPUManager));
-		/* PositionBufferCPUManager *pMan = */ new(s_myHandle) PositionBufferCPUManager(context, arena);
-	}
+		PositionBufferCPUManager(PE::GameContext& context, PE::MemoryArena arena);
 
-	static PositionBufferCPUManager* Instance()
-	{
-		return s_myHandle.getObject<PositionBufferCPUManager>();
-	}
 
-	// Reads the specified buffer from file
-	Handle ReadIndexBuffer(const char *filename, const char *package, const char *tag);
-	Handle ReadVertexBuffer(const char *filename, const char *package, const char *tag);
-	Handle ReadTexCoordBuffer(const char *filename, const char *package, const char *tag);
-	Handle ReadTangentBuffer(const char *filename, const char *package, const char *tag);
+		static void Construct(PE::GameContext& context, PE::MemoryArena arena)
+		{
+			s_myHandle = Handle("VERTEX_BUFFER_CPU_MANAGER", sizeof(PositionBufferCPUManager));
+			/* PositionBufferCPUManager *pMan = */ new(s_myHandle) PositionBufferCPUManager(context, arena);
+		}
 
-	Handle ReadMaterialSetCPU(const char *filename, const char *package = NULL);
-	Handle ReadSkinWeights(const char *filename, const char *package, const char *tag);
+		static PositionBufferCPUManager* Instance()
+		{
+			return s_myHandle.getObject<PositionBufferCPUManager>();
+		}
 
-	static Handle s_myHandle;
+		// Reads the specified buffer from file
+		Handle ReadIndexBuffer(const char* filename, const char* package, const char* tag);
+		Handle ReadVertexBuffer(const char* filename, const char* package, const char* tag);
+		Handle ReadTexCoordBuffer(const char* filename, const char* package, const char* tag);
+		Handle ReadTangentBuffer(const char* filename, const char* package, const char* tag);
 
-	StrToHandleMap m_map;
+		Handle ReadMaterialSetCPU(const char* filename, const char* package = NULL);
+		Handle ReadSkinWeights(const char* filename, const char* package, const char* tag);
 
-	StrToHandleMap m_iBufferCPUMap;
-	StrToHandleMap m_tcBufferCPUMap;
-	StrToHandleMap m_nBufferCPUMap;
-	StrToHandleMap m_tBufferCPUMap;
+		static Handle s_myHandle;
 
-	StrToHandleMap m_SWCPUMap;
+		StrToHandleMap m_map;
 
-	StrToHandleMap m_MatSetMap;
+		StrToHandleMap m_iBufferCPUMap;
+		StrToHandleMap m_tcBufferCPUMap;
+		StrToHandleMap m_nBufferCPUMap;
+		StrToHandleMap m_tBufferCPUMap;
 
-	PE::MemoryArena m_arena; PE::GameContext *m_pContext;
-};
+		StrToHandleMap m_SWCPUMap;
+
+		StrToHandleMap m_MatSetMap;
+
+		PE::MemoryArena m_arena; 
+		PE::GameContext* m_pContext;
+	};
+
 }; // namespace PE
 #endif
