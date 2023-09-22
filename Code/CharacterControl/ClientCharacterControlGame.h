@@ -5,6 +5,7 @@
 #include "GlobalRegistry.h"
 
 namespace CharacterControl {
+
 	namespace Components {
 
 		struct ClientCharacterControlGame : public PE::Components::ClientGame
@@ -27,12 +28,12 @@ namespace CharacterControl {
 			// Virtual methods
 			// override initialization because we want to initialize a light source and a defautl control scheme for Basic Demo
 			virtual int initGame();
-			//
 			// override in case need special game loop. usually not needed
 			//virtual int runGame();
 		};
 
 	}; // namespace Components
+
 }; // namespace Basic
 
 #endif

@@ -6,9 +6,9 @@
 
 
 namespace PE {
-namespace Events {
+	namespace Events {
 
-PE_IMPLEMENT_CLASS0(Event);
-}
+		PE_IMPLEMENT_CLASS0(Event);
+	}
 }
 

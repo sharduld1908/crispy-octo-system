@@ -16,60 +16,60 @@
 #include "EventQueue.h"
 
 namespace PE {
-namespace Events {
-// This is an event queue. There will be one global event queue, but it will be allowed
-// to create additional queues (i.e. there will not e only one single instance)
-struct EventQueueManager : PE::PEAllocatableAndDefragmentable
-{
-	// Singleton ------------------------------------------------------------------
+	namespace Events {
+		// This is an event queue. There will be one global event queue, but it will be allowed
+		// to create additional queues (i.e. there will not e only one single instance)
+		struct EventQueueManager : PE::PEAllocatableAndDefragmentable
+		{
+			// Singleton ------------------------------------------------------------------
 
-	static void Construct(PE::GameContext &context, PE::MemoryArena arena)
-	{
-        PE::Handle handle("EVENT_QUEUE_MANAGER", sizeof(EventQueueManager));
-		/*EventQueueManager *pEventQueueManager = */ new(handle) EventQueueManager(context, arena);
-		
-		// Singleton
-		SetInstanceHandle(handle);
-	}
+			static void Construct(PE::GameContext& context, PE::MemoryArena arena)
+			{
+				PE::Handle handle("EVENT_QUEUE_MANAGER", sizeof(EventQueueManager));
+				/*EventQueueManager *pEventQueueManager = */ new(handle) EventQueueManager(context, arena);
 
-	static EventQueueManager *Instance()
-	{
-		return s_myHandle.getObject<EventQueueManager>();
-	}
+				// Singleton
+				SetInstanceHandle(handle);
+			}
 
-	static Handle InstanceHandle()
-	{
-		return s_myHandle;
-	}
+			static EventQueueManager* Instance()
+			{
+				return s_myHandle.getObject<EventQueueManager>();
+			}
 
-	static void SetInstanceHandle(const Handle &handle)
-	{
-		// Singleton
-		EventQueueManager::s_myHandle = handle;
-	}
+			static Handle InstanceHandle()
+			{
+				return s_myHandle;
+			}
 
-	// Constructor -------------------------------------------------------------
-	EventQueueManager(PE::GameContext &context, PE::MemoryArena arena);
+			static void SetInstanceHandle(const Handle& handle)
+			{
+				// Singleton
+				EventQueueManager::s_myHandle = handle;
+			}
 
-	// Methods -----------------------------------------------------------------
+			// Constructor -------------------------------------------------------------
+			EventQueueManager(PE::GameContext& context, PE::MemoryArena arena);
 
-	void add(PE::Handle hEvt, PrimitiveTypes::UInt32 queueType = Events::QT_GENERAL);
+			// Methods -----------------------------------------------------------------
 
-    PE::Handle getEventQueueHandle(const char *pEvtQueueName)
-	{
-		return m_map.findHandle(pEvtQueueName);
-	}
+			void add(PE::Handle hEvt, PrimitiveTypes::UInt32 queueType = Events::QT_GENERAL);
 
-private:
-	static PE::Handle s_myHandle;
-	StrToHandleMap m_map; 
+			PE::Handle getEventQueueHandle(const char* pEvtQueueName)
+			{
+				return m_map.findHandle(pEvtQueueName);
+			}
 
-	Events::EventQueue *generalEvtQueue;
-	Events::EventQueue *inputEvtQueue;
+		private:
+			static PE::Handle s_myHandle;
+			StrToHandleMap m_map;
 
-public:
-};
+			Events::EventQueue* generalEvtQueue;
+			Events::EventQueue* inputEvtQueue;
 
-}; // namespace Events
+		public:
+		};
+
+	}; // namespace Events
 }; // namespace PE
 #endif

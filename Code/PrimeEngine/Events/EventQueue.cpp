@@ -9,10 +9,10 @@
 #include "EventQueue.h"
 
 namespace PE {
-namespace Events {
+	namespace Events {
 
-// Static member variables
-Handle EventQueue::s_myHandle;
+		// Static member variables
+		Handle EventQueue::s_myHandle;
 
-}; // namespace Events
+	}; // namespace Events
 }; // namespace PE
