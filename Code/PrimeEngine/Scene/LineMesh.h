@@ -15,31 +15,32 @@
 #include "Mesh.h"
 
 namespace PE {
-namespace Components {
 
-struct LineMesh : public Mesh
-{
-	PE_DECLARE_CLASS(LineMesh);
+	namespace Components {
 
-	// Constructor -------------------------------------------------------------
-	LineMesh(PE::GameContext &context, PE::MemoryArena arena, Handle hMyself) : Mesh(context, arena, hMyself)
-	{
-		m_loaded = false;
-	}
+		struct LineMesh : public Mesh
+		{
+			PE_DECLARE_CLASS(LineMesh);
 
-	virtual ~LineMesh(){}
+			// Constructor -------------------------------------------------------------
+			LineMesh(PE::GameContext& context, PE::MemoryArena arena, Handle hMyself) : Mesh(context, arena, hMyself)
+			{
+				m_loaded = false;
+			}
 
-	virtual void addDefaultComponents();
+			virtual ~LineMesh() {}
 
-	PE_DECLARE_IMPLEMENT_EVENT_HANDLER_WRAPPER(do_GATHER_DRAWCALLS);
-	virtual void do_GATHER_DRAWCALLS(Events::Event *pEvt);
+			virtual void addDefaultComponents();
 
-	void loadFrom3DPoints_needsRC(float *vals, int numPoints, const char *techName, int &threadOwnershipMask);
+			PE_DECLARE_IMPLEMENT_EVENT_HANDLER_WRAPPER(do_GATHER_DRAWCALLS);
+			virtual void do_GATHER_DRAWCALLS(Events::Event* pEvt);
 
-	PrimitiveTypes::Bool m_loaded;
-	Handle m_meshCPU;
-};
+			void loadFrom3DPoints_needsRC(float* vals, int numPoints, const char* techName, int& threadOwnershipMask);
 
-}; // namespace Components
+			PrimitiveTypes::Bool m_loaded;
+			Handle m_meshCPU;
+		};
+
+	}; // namespace Components
 }; // namespace PE
 #endif

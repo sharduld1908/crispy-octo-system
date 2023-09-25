@@ -26,7 +26,6 @@ namespace PE {
 	{
 		PositionBufferCPUManager(PE::GameContext& context, PE::MemoryArena arena);
 
-
 		static void Construct(PE::GameContext& context, PE::MemoryArena arena)
 		{
 			s_myHandle = Handle("VERTEX_BUFFER_CPU_MANAGER", sizeof(PositionBufferCPUManager));

@@ -24,22 +24,22 @@
 // Sibling/Children includes
 
 namespace PE {
-struct MaterialSetCPU;
-namespace Components {
+	struct MaterialSetCPU;
+	namespace Components {
 
-struct MeshManager : Component
-{
-	PE_DECLARE_CLASS(MeshManager);
-	MeshManager(PE::GameContext &context, PE::MemoryArena arena, Handle hMyself);
+		struct MeshManager : Component
+		{
+			PE_DECLARE_CLASS(MeshManager);
+			MeshManager(PE::GameContext& context, PE::MemoryArena arena, Handle hMyself);
 
-	PE::Handle getAsset(const char *asset, const char *package, int &threadOwnershipMask);
+			PE::Handle getAsset(const char* asset, const char* package, int& threadOwnershipMask);
 
-	// for when asset is manually added from outside. it will get autogeenrated key
-	void registerAsset(const Handle &h);
+			// for when asset is manually added from outside. it will get autogeenrated key
+			void registerAsset(const Handle& h);
 
-	PEMap<PE::Handle> m_assets;
-};
+			PEMap<PE::Handle> m_assets;
+		};
 
-}; // namespace Components
+	}; // namespace Components
 }; // namespace PE
 #endif

@@ -30,20 +30,20 @@
 
 namespace PE {
 
-	namespace Components{
+	namespace Components {
 
 		PE_IMPLEMENT_CLASS1(MeshManager, Component);
-		MeshManager::MeshManager(PE::GameContext &context, PE::MemoryArena arena, Handle hMyself)
+		MeshManager::MeshManager(PE::GameContext& context, PE::MemoryArena arena, Handle hMyself)
 			: Component(context, arena, hMyself)
 			, m_assets(context, arena, 256)
 		{
 		}
 
-		PE::Handle MeshManager::getAsset(const char *asset, const char *package, int &threadOwnershipMask)
+		PE::Handle MeshManager::getAsset(const char* asset, const char* package, int& threadOwnershipMask)
 		{
 			char key[StrTPair<Handle>::StrSize];
 			sprintf(key, "%s/%s", package, asset);
-	
+
 			int index = m_assets.findIndex(key);
 			if (index != -1)
 			{
@@ -54,7 +54,7 @@ namespace PE {
 			if (StringOps::endswith(asset, "skela"))
 			{
 				PE::Handle hSkeleton("Skeleton", sizeof(Skeleton));
-				Skeleton *pSkeleton = new(hSkeleton) Skeleton(*m_pContext, m_arena, hSkeleton);
+				Skeleton* pSkeleton = new(hSkeleton) Skeleton(*m_pContext, m_arena, hSkeleton);
 				pSkeleton->addDefaultComponents();
 
 				pSkeleton->initFromFiles(asset, package, threadOwnershipMask);
@@ -64,18 +64,18 @@ namespace PE {
 			{
 				MeshCPU mcpu(*m_pContext, m_arena);
 				mcpu.ReadMesh(asset, package, "");
-		
+
 				PE::Handle hMesh("Mesh", sizeof(Mesh));
-				Mesh *pMesh = new(hMesh) Mesh(*m_pContext, m_arena, hMesh);
+				Mesh* pMesh = new(hMesh) Mesh(*m_pContext, m_arena, hMesh);
 				pMesh->addDefaultComponents();
 
 				pMesh->loadFromMeshCPU_needsRC(mcpu, threadOwnershipMask);
 
-		#if PE_API_IS_D3D11
+#if PE_API_IS_D3D11
 				// todo: work out how lods will work
 				//scpu.buildLod();
-		#endif
-				// generate collision volume here. or you could generate it in MeshCPU::ReadMesh()
+#endif
+		// generate collision volume here. or you could generate it in MeshCPU::ReadMesh()
 				pMesh->m_performBoundingVolumeCulling = true; // will now perform tests for this mesh
 
 				h = hMesh;
@@ -89,16 +89,16 @@ namespace PE {
 			return h;
 		}
 
-		void MeshManager::registerAsset(const PE::Handle &h)
+		void MeshManager::registerAsset(const PE::Handle& h)
 		{
 			static int uniqueId = 0;
 			++uniqueId;
 			char key[StrTPair<Handle>::StrSize];
 			sprintf(key, "__generated_%d", uniqueId);
-	
+
 			int index = m_assets.findIndex(key);
 			PEASSERT(index == -1, "Generated meshes have to be unique");
-	
+
 			RootSceneNode::Instance()->addComponent(h);
 			m_assets.add(key, h);
 		}

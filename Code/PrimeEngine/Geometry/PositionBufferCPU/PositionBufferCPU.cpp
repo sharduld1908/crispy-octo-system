@@ -41,7 +41,21 @@ void PositionBufferCPU::ReadPositionBuffer(const char *filename, const char *pac
 	for (int i = 0; i < n * 3; i++)
 	{
 		f.nextFloat32(val);
-		m_values.add(val * factor);
+		PrimitiveTypes::Float32 coor = val * factor;
+
+		m_values.add(coor);
+		if (i % 3 == 0) {
+			min_max_aabb.max_coordinates.m_x_pos = std::max(min_max_aabb.max_coordinates.m_x_pos, coor);
+			min_max_aabb.min_coordinates.m_x_pos = std::min(min_max_aabb.min_coordinates.m_x_pos, coor);
+		}
+		else if (i % 3 == 1) {
+			min_max_aabb.max_coordinates.m_y_pos = std::max(min_max_aabb.max_coordinates.m_y_pos, coor);
+			min_max_aabb.min_coordinates.m_y_pos = std::min(min_max_aabb.min_coordinates.m_y_pos, coor);
+		}
+		else {
+			min_max_aabb.max_coordinates.m_z_pos = std::max(min_max_aabb.max_coordinates.m_z_pos, coor);
+			min_max_aabb.min_coordinates.m_z_pos = std::min(min_max_aabb.min_coordinates.m_z_pos, coor);
+		}
 	}
 }
 

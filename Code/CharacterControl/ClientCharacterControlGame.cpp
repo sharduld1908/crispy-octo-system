@@ -29,12 +29,12 @@ namespace CharacterControl {
 			ClientGame::initGame();
 
 			//add game specific context
-			CharacterControlContext *pGameCtx = new (m_arena) CharacterControlContext;
+			CharacterControlContext* pGameCtx = new (m_arena) CharacterControlContext;
 
 			m_pContext->m_pGameSpecificContext = pGameCtx;
 
-			PE::Components::LuaEnvironment *pLuaEnv = m_pContext->getLuaEnvironment();
-	
+			PE::Components::LuaEnvironment* pLuaEnv = m_pContext->getLuaEnvironment();
+
 			// init events, components, and other classes of the project
 			CharacterControl::Register(pLuaEnv, PE::GlobalRegistry::Instance());
 
@@ -58,7 +58,7 @@ namespace CharacterControl {
 				PE::Handle hGOMAddon = PE::Handle("ClientGameObjectManagerAddon", sizeof(ClientGameObjectManagerAddon));
 				pGameCtx->m_pGameObjectManagerAddon = new(hGOMAddon) ClientGameObjectManagerAddon(*m_pContext, m_arena, hGOMAddon);
 				pGameCtx->getGameObjectManagerAddon()->addDefaultComponents();
-	
+
 				// add it to game object manager
 				// now all game events will be passed through to our GameObjectManagerAddon
 				m_pContext->getGameObjectManager()->addComponent(hGOMAddon);
@@ -79,15 +79,15 @@ namespace CharacterControl {
 				// start deactivated. needs to be deactivated AFTER adding it to parent components
 				pGameCtx->getTankGameControls()->setEnabled(false);
 
-		
-		#if !PE_API_IS_D3D11
+
+#if !PE_API_IS_D3D11
 				if (!spawnALotOfSoldiersForGpuAnim)
 				{
 					for (int i = 0; i < 6; ++i)
 						((ClientGameObjectManagerAddon*)(pGameCtx->getGameObjectManagerAddon()))->createTank(
-						i, m_pContext->m_gameThreadThreadOwnershipMask);
+							i, m_pContext->m_gameThreadThreadOwnershipMask);
 				}
-		#endif
+#endif
 			}
 
 			{
@@ -112,73 +112,69 @@ namespace CharacterControl {
 			if (false)
 			{
 				PE::Handle hSN("SCENE_NODE", sizeof(SceneNode));
-				SceneNode *pSN = new(hSN) SceneNode(*m_pContext, m_arena, hSN);
+				SceneNode* pSN = new(hSN) SceneNode(*m_pContext, m_arena, hSN);
 				pSN->addDefaultComponents();
 
 				pSN->m_base.setPos(Vector3(0, 0, 0));
 
 				{
 					PE::Handle hSoldierAnimSM("SoldierNPCAnimationSM", sizeof(SoldierNPCAnimationSM));
-					SoldierNPCAnimationSM *pSoldierAnimSM = new(hSoldierAnimSM) SoldierNPCAnimationSM(*m_pContext, m_arena, hSoldierAnimSM);
+					SoldierNPCAnimationSM* pSoldierAnimSM = new(hSoldierAnimSM) SoldierNPCAnimationSM(*m_pContext, m_arena, hSoldierAnimSM);
 					pSoldierAnimSM->addDefaultComponents();
 
 					pSoldierAnimSM->m_debugAnimIdOffset = 0;// rand() % 3;
 
-
 					PE::Handle hSkeletonInstance("SkeletonInstance", sizeof(SkeletonInstance));
-					SkeletonInstance *pSkelInst = new(hSkeletonInstance) SkeletonInstance(*m_pContext, m_arena, hSkeletonInstance, 
+					SkeletonInstance* pSkelInst = new(hSkeletonInstance) SkeletonInstance(*m_pContext, m_arena, hSkeletonInstance,
 						hSoldierAnimSM);
 					pSkelInst->addDefaultComponents();
 
 					pSkelInst->initFromFiles("soldier_Soldier_Skeleton.skela", "Default", m_pContext->m_gameThreadThreadOwnershipMask);
 					pSkelInst->setAnimSet("soldier_Soldier_Skeleton.animseta", "Default");
 
-					
 					{
 						PE::Handle hMeshInstance("MeshInstance", sizeof(MeshInstance));
-						MeshInstance *pMeshInstance = new(hMeshInstance) MeshInstance(*m_pContext, m_arena, hMeshInstance);
+						MeshInstance* pMeshInstance = new(hMeshInstance) MeshInstance(*m_pContext, m_arena, hMeshInstance);
 						pMeshInstance->addDefaultComponents();
-				
+
 						pMeshInstance->initFromFile("SoldierTransform.mesha", "Default", m_pContext->m_gameThreadThreadOwnershipMask);
-				
+
 						pSkelInst->addComponent(hMeshInstance);
 					}
 
-			
-	 			//{
-	 			//	// create a scene node for gun attached to a joint
-	 			//	PE::Handle hMyGunSN = PE::Handle("SCENE_NODE", sizeof(JointSceneNode));
-	 			//	JointSceneNode *pGunSN = new(hMyGunSN) JointSceneNode(*m_pContext, m_arena, hMyGunSN, 38);
-	 			//	pGunSN->addDefaultComponents();
-	 			//	{
-	 			//		PE::Handle hMyGunMesh = PE::Handle("MeshInstance", sizeof(MeshInstance));
-	 			//		MeshInstance *pGunMeshInstance = new(hMyGunMesh) MeshInstance(*m_pContext, m_arena, hMyGunMesh);
-	 
-	 			//		pGunMeshInstance->addDefaultComponents();
-	 			//		pGunMeshInstance->initFromFile(pEvt->m_gunMeshName, pEvt->m_gunMeshPackage, pEvt->m_threadOwnershipMask);
-	 
-	 			//		// add gun to joint
-	 			//		pGunSN->addComponent(hMyGunMesh);
-	 			//	}
-	 			//	// add gun scene node to the skin
-	 			//	pSkelInst->addComponent(hMyGunSN);
-	 			//}
+					//{
+					//	// create a scene node for gun attached to a joint
+					//	PE::Handle hMyGunSN = PE::Handle("SCENE_NODE", sizeof(JointSceneNode));
+					//	JointSceneNode *pGunSN = new(hMyGunSN) JointSceneNode(*m_pContext, m_arena, hMyGunSN, 38);
+					//	pGunSN->addDefaultComponents();
+					//	{
+					//		PE::Handle hMyGunMesh = PE::Handle("MeshInstance", sizeof(MeshInstance));
+					//		MeshInstance *pGunMeshInstance = new(hMyGunMesh) MeshInstance(*m_pContext, m_arena, hMyGunMesh);
 
-		
+					//		pGunMeshInstance->addDefaultComponents();
+					//		pGunMeshInstance->initFromFile(pEvt->m_gunMeshName, pEvt->m_gunMeshPackage, pEvt->m_threadOwnershipMask);
+
+					//		// add gun to joint
+					//		pGunSN->addComponent(hMyGunMesh);
+					//	}
+					//	// add gun scene node to the skin
+					//	pSkelInst->addComponent(hMyGunSN);
+					//}
+
 					Events::SoldierNPCAnimSM_Event_WALK evt;
 					pSkelInst->handleEvent(&evt);
 
 					// add skeleton to scene node
 					pSN->addComponent(hSkeletonInstance);
 				}
-		
+
 				RootSceneNode::Instance()->addComponent(hSN);
 			}
 
 			//the soldier creation code expects not having the redner context so release it here, and reacquire afterwards
 			m_pContext->getGPUScreen()->ReleaseRenderContextOwnership(m_pContext->m_gameThreadThreadOwnershipMask);
-	
-			#if PE_API_IS_D3D11
+
+#if PE_API_IS_D3D11
 			if (spawnALotOfSoldiersForGpuAnim)
 			{
 				int smallx = 4;
@@ -186,16 +182,16 @@ namespace CharacterControl {
 				for (int y = 0; y < 16; ++y)
 					for (int x = 0; x < smallx; ++x)
 						((ClientGameObjectManagerAddon*)(m_pContext->get<CharacterControlContext>()->getGameObjectManagerAddon()))->createSoldierNPC(
-						Vector3(x * 2.0f , 0.0f, 2.0f * y), m_pContext->m_gameThreadThreadOwnershipMask);
+							Vector3(x * 2.0f, 0.0f, 2.0f * y), m_pContext->m_gameThreadThreadOwnershipMask);
 			}
-			#endif
-    
+#endif
+
 			m_pContext->getGPUScreen()->AcquireRenderContextOwnership(m_pContext->m_gameThreadThreadOwnershipMask);
-	
+
 			bool spawnALotOfMeshes = true;
-    
+
 			int maxX = 10; // maybe need more to get framerate lower
-    
+
 			if (spawnALotOfMeshes)
 			{
 				for (int ix = 0; ix < maxX; ++ix)
@@ -203,33 +199,33 @@ namespace CharacterControl {
 					for (int iy = 0; iy < 25; ++iy)
 					{
 						PE::Handle hSN("SCENE_NODE", sizeof(SceneNode));
-						SceneNode *pMainSN = new(hSN) SceneNode(*m_pContext, m_arena, hSN);
+						SceneNode* pMainSN = new(hSN) SceneNode(*m_pContext, m_arena, hSN);
 						pMainSN->addDefaultComponents();
-        
-						pMainSN->m_base.setPos(Vector3(ix * 4.0f, 0, -15.0f -iy * 2.0f));
-        
+
+						pMainSN->m_base.setPos(Vector3(ix * 2.5f, 0, -12.0f - iy * 2.0f));
+
 						PE::Handle hImrodMeshInst = PE::Handle("MeshInstance", sizeof(MeshInstance));
-						MeshInstance *pImrodMeshInst = new(hImrodMeshInst) MeshInstance(*m_pContext, m_arena, hImrodMeshInst);
-        
+						MeshInstance* pImrodMeshInst = new(hImrodMeshInst) MeshInstance(*m_pContext, m_arena, hImrodMeshInst);
+
 						pImrodMeshInst->addDefaultComponents();
 						pImrodMeshInst->initFromFile("imrod.x_imrodmesh_mesh.mesha", "Default", m_pContext->m_gameThreadThreadOwnershipMask);
 
 						pMainSN->addComponent(hImrodMeshInst);
-        
+
 						RootSceneNode::Instance()->addComponent(hSN);
 					}
 				}
 			}
 
-	
-		#if PE_PLAT_IS_WIN32
-	
+
+#if PE_PLAT_IS_WIN32
+
 			int testVar = number_cpp_extern + number_c_extern;// + TestExternIntVar;
 
 			__asm {
 				mov eax, [number_cpp_extern]
 				add eax, [number_c_extern]
-				mov [testVar], eax
+				mov[testVar], eax
 				mov eax, [number_c_extern]
 			}
 
@@ -238,7 +234,7 @@ namespace CharacterControl {
 			testfunc_c_stdcall();
 
 			testfunc_c_fastcall();
-		#endif
+#endif
 
 			//here's how you would run this level trough code
 
@@ -248,10 +244,10 @@ namespace CharacterControl {
 
 			m_pContext->getGPUScreen()->ReleaseRenderContextOwnership(m_pContext->m_gameThreadThreadOwnershipMask);
 
-		#if PE_PLAT_IS_PSVITA // do it for ps3 becasue right now communication between pyClient and ps3 is not working
+#if PE_PLAT_IS_PSVITA // do it for ps3 becasue right now communication between pyClient and ps3 is not working
 			//m_pContext->getLuaEnvironment()->runString("LevelLoader.loadLevel('ccontrollvl0.x_level.levela', 'CharacterControl')");
-		#endif
-			//m_pContext->getLuaEnvironment()->runString("LevelLoader.loadLevel('char_highlight.x_level.levela', 'Basic')");
+#endif
+	//m_pContext->getLuaEnvironment()->runString("LevelLoader.loadLevel('char_highlight.x_level.levela', 'Basic')");
 
 			m_pContext->getGPUScreen()->AcquireRenderContextOwnership(m_pContext->m_gameThreadThreadOwnershipMask);
 
