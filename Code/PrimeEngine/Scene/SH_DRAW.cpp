@@ -213,7 +213,7 @@ namespace PE {
 						const int numPts = 24;
 						int iPt = 0;
 
-						Vector3 color(0.3f, 0.6f, 0.9f);
+						Vector3 color(0.5f, 0.6f, 0.1f);
 						Vector3 linepts[numPts * 2];
 
 						for (int i = 0; i < edges.size(); i++) {
