@@ -208,7 +208,7 @@ namespace PE {
 
 						SceneNode* pSN = pInst->getFirstParentByTypePtr<SceneNode>();
 						Matrix4x4 worldTransform = pSN->m_base;
-						std::vector<std::pair<int, int>> edges = { {0,1}, {0,4}, {0,2} , {1,3} , {1,5}, {4,5}, {5,7}, {4,6}, {7,6}, {7,3}, {2,6}, {2,3} };
+						std::vector<std::pair<int, int>> edges = {{0,1}, {0,4}, {1,3}, {1,5}, {2,6}, {2,0}, {3,2}, {3,7}, {4,5},  {4,6}, {5,7}, {6,7}};
 
 						const int numPts = 24;
 						int iPt = 0;
