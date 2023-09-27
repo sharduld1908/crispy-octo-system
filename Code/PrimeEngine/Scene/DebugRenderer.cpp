@@ -95,6 +95,7 @@ namespace PE {
 				pInstance->setEnabled(false);
 			}
 		}
+
 		void DebugRenderer::createRootLineMesh()
 		{
 			Vector3 color(0.5f, 0.5f, 0.5f);

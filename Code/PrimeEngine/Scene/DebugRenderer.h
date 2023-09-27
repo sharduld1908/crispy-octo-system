@@ -22,6 +22,7 @@ namespace PE {
 
 		struct DebugRenderer : public SceneNode
 		{
+
 			PE_DECLARE_CLASS(DebugRenderer);
 			// Singleton ------------------------------------------------------------------
 

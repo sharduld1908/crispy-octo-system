@@ -186,7 +186,7 @@ namespace CharacterControl {
 			}
 #endif
 
-			m_pContext->getGPUScreen()->AcquireRenderContextOwnership(m_pContext->m_gameThreadThreadOwnershipMask);
+			m_pContext->getGPUScreen()->AcquireRenderContextOwnership(m_pContext->m_gameThreadThreadOwnershipMask); 
 
 			bool spawnALotOfMeshes = true;
 

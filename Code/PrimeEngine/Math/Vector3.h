@@ -17,6 +17,8 @@
 
 // Sibling/Children includes
 #include "MathHelpers.h"
+#include <iostream>
+#include <sstream>
 
 
 class Vector2 {
@@ -26,7 +28,7 @@ public:
 #endif
 	union {
 		PrimitiveTypes::Float32 m_values[2];
-		struct{
+		struct {
 			PrimitiveTypes::Float32 m_x, m_y;
 		};
 	};
@@ -47,9 +49,9 @@ public:
 #if !APIABSTRACTION_PS3 && !PE_PLAT_IS_PS4
 #pragma warning(disable : 4201)
 #endif
-	union{
+	union {
 		PrimitiveTypes::Float32 m_values[3];
-		struct{
+		struct {
 			PrimitiveTypes::Float32 m_x, m_y, m_z;
 		};
 	};
@@ -57,19 +59,19 @@ public:
 #pragma warning(default : 4201)
 #endif
 
-	Vector3() : m_x(0), m_y(0), m_z(0){}
-	Vector3(PrimitiveTypes::Float32 x, PrimitiveTypes::Float32 y, PrimitiveTypes::Float32 z) : m_x(x), m_y(y), m_z(z){}
-	Vector3(const Vector3 &copy){m_x = copy.m_x; m_y = copy.m_y; m_z = copy.m_z;}
-	
-	PrimitiveTypes::Float32 getX(void) const {return m_x;}
-	PrimitiveTypes::Float32 getY(void) const {return m_y;}
-	PrimitiveTypes::Float32 getZ(void) const {return m_z;}
+	Vector3() : m_x(0), m_y(0), m_z(0) {}
+	Vector3(PrimitiveTypes::Float32 x, PrimitiveTypes::Float32 y, PrimitiveTypes::Float32 z) : m_x(x), m_y(y), m_z(z) {}
+	Vector3(const Vector3& copy) { m_x = copy.m_x; m_y = copy.m_y; m_z = copy.m_z; }
 
-	PrimitiveTypes::Float32 length(){return sqrtf(m_x * m_x + m_y * m_y + m_z * m_z);}
+	PrimitiveTypes::Float32 getX(void) const { return m_x; }
+	PrimitiveTypes::Float32 getY(void) const { return m_y; }
+	PrimitiveTypes::Float32 getZ(void) const { return m_z; }
 
-	PrimitiveTypes::Float32 lengthSqr(){return (m_x * m_x + m_y * m_y + m_z * m_z);}
-	
-	void normalize() {*this /= length();}
+	PrimitiveTypes::Float32 length() { return sqrtf(m_x * m_x + m_y * m_y + m_z * m_z); }
+
+	PrimitiveTypes::Float32 lengthSqr() { return (m_x * m_x + m_y * m_y + m_z * m_z); }
+
+	void normalize() { *this /= length(); }
 
 	void resize(PrimitiveTypes::Float32 newLength)
 	{
@@ -77,19 +79,19 @@ public:
 		*this *= k;
 	}
 
-	void operator /= (const PrimitiveTypes::Float32 &f) {m_x /= f; m_y /= f; m_z /= f;}
+	void operator /= (const PrimitiveTypes::Float32& f) { m_x /= f; m_y /= f; m_z /= f; }
 
-	void operator *= (const PrimitiveTypes::Float32 &f) {m_x *= f; m_y *= f; m_z *= f;}
+	void operator *= (const PrimitiveTypes::Float32& f) { m_x *= f; m_y *= f; m_z *= f; }
 
-	void operator += (const Vector3 &v) {m_x += v.m_x; m_y+= v.m_y; m_z += v.m_z;}
+	void operator += (const Vector3& v) { m_x += v.m_x; m_y += v.m_y; m_z += v.m_z; }
 
-	void operator -= (const Vector3 &v) {m_x -= v.m_x; m_y-= v.m_y; m_z -= v.m_z;}
+	void operator -= (const Vector3& v) { m_x -= v.m_x; m_y -= v.m_y; m_z -= v.m_z; }
 
-	Vector3 operator-() const {return Vector3(-m_x, -m_y, -m_z);}
+	Vector3 operator-() const { return Vector3(-m_x, -m_y, -m_z); }
 
-	float dotProduct(const Vector3 &v) { return m_x * v.m_x + m_y * v.m_y + m_z * v.m_z;}
+	float dotProduct(const Vector3& v) { return m_x * v.m_x + m_y * v.m_y + m_z * v.m_z; }
 
-	Vector3 crossProduct(const Vector3 &v)
+	Vector3 crossProduct(const Vector3& v)
 	{
 		return Vector3(
 			m_y * v.m_z - m_z * v.m_y,
@@ -97,50 +99,63 @@ public:
 			m_x * v.m_y - m_y * v.m_x);
 	}
 
-	Vector3 operator * (PrimitiveTypes::Float32 f) {return Vector3(m_x * f, m_y * f, m_z * f);}
+	Vector3 operator * (PrimitiveTypes::Float32 f) { return Vector3(m_x * f, m_y * f, m_z * f); }
 
-	PrimitiveTypes::Float32 operator *(const Vector3 &v) {return dotProduct(v);}
+	PrimitiveTypes::Float32 operator *(const Vector3& v) { return dotProduct(v); }
 
-	Vector3 projectionOnVector(const Vector3 &v)
+	Vector3 projectionOnVector(const Vector3& v)
 	{
 		Vector3 temp(v);
 		temp.normalize();
 		return Vector3(temp * dotProduct(temp));
 	}
 
-	PrimitiveTypes::Float32 projectionTimeOnVector(const Vector3 &v)
+	PrimitiveTypes::Float32 projectionTimeOnVector(const Vector3& v)
 	{
 		Vector3 temp(v);
 		temp.normalize();
 		return dotProduct(temp);
 	}
+
+	std::string to_string() {
+		float x = this->m_x;
+		float y = this->m_y;
+		float z = this->m_z;
+
+		std::stringstream ss("");
+		ss << "vec(" << x << "," << y << "," << z << ")\n";
+		std::string res = ss.str();
+		
+		return res;
+	}
+
 };
 
-inline Vector3 operator * (PrimitiveTypes::Float32 f, const Vector3 &v) {return Vector3(v.m_x * f, v.m_y * f, v.m_z * f);}
+inline Vector3 operator * (PrimitiveTypes::Float32 f, const Vector3& v) { return Vector3(v.m_x * f, v.m_y * f, v.m_z * f); }
 
-inline Vector3 operator / (const Vector3 &v, PrimitiveTypes::Float32 f) {return Vector3(v.m_x / f, v.m_y / f, v.m_z / f);}
+inline Vector3 operator / (const Vector3& v, PrimitiveTypes::Float32 f) { return Vector3(v.m_x / f, v.m_y / f, v.m_z / f); }
 
-inline Vector3 operator + (const Vector3 &v0, const Vector3 &v1) 
+inline Vector3 operator + (const Vector3& v0, const Vector3& v1)
 {
 	return Vector3(v0.m_x + v1.m_x, v0.m_y + v1.m_y, v0.m_z + v1.m_z);
 }
 
-inline Vector3 operator - (const Vector3 &v0, const Vector3 &v1)
+inline Vector3 operator - (const Vector3& v0, const Vector3& v1)
 {
-	return Vector3(v0.m_x - v1.m_x,	v0.m_y - v1.m_y, v0.m_z - v1.m_z);
+	return Vector3(v0.m_x - v1.m_x, v0.m_y - v1.m_y, v0.m_z - v1.m_z);
 }
 
-inline bool operator == (const Vector3 &v0, const Vector3 &v1)
+inline bool operator == (const Vector3& v0, const Vector3& v1)
 {
-	return compareFloats(v0.m_x, v1.m_x) 
-		&& compareFloats(v0.m_y, v1.m_y) 
+	return compareFloats(v0.m_x, v1.m_x)
+		&& compareFloats(v0.m_y, v1.m_y)
 		&& compareFloats(v0.m_z, v1.m_z);
 }
 
-inline bool operator > (const Vector3 &v0, const Vector3 &v1) 
+inline bool operator > (const Vector3& v0, const Vector3& v1)
 {
-	if(compareFloats(v0.m_x, v1.m_x))
-		if(compareFloats(v0.m_y, v1.m_y))
+	if (compareFloats(v0.m_x, v1.m_x))
+		if (compareFloats(v0.m_y, v1.m_y))
 			if (compareFloats(v0.m_z, v1.m_z))
 				return false;
 			else
@@ -151,10 +166,10 @@ inline bool operator > (const Vector3 &v0, const Vector3 &v1)
 		return(v0.m_x > v1.m_x);
 }
 
-inline bool operator < (const Vector3 &v0, const Vector3 &v1) 
+inline bool operator < (const Vector3& v0, const Vector3& v1)
 {
-	if(compareFloats(v0.m_x, v1.m_x))
-		if(compareFloats(v0.m_y, v1.m_y))
+	if (compareFloats(v0.m_x, v1.m_x))
+		if (compareFloats(v0.m_y, v1.m_y))
 			if (compareFloats(v0.m_z, v1.m_z))
 				return false;
 			else

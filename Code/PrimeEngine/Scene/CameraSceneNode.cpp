@@ -3,6 +3,7 @@
 #include "PrimeEngine/Events/StandardEvents.h"
 
 #define Z_ONLY_CAM_BIAS 0.0f
+
 namespace PE {
 
 	namespace Components {
@@ -13,6 +14,8 @@ namespace PE {
 		{
 			m_near = 0.05f;
 			m_far = 2000.0f;
+
+			m_frustum = new Frustum();
 		}
 		void CameraSceneNode::addDefaultComponents()
 		{
@@ -64,8 +67,80 @@ namespace PE {
 				m_near, m_far);
 
 			SceneNode::do_CALCULATE_TRANSFORMATIONS(pEvt);
+			
+			m_frustum->MoveFrustumWithCamera(pos, target, up, m_near, m_far, verticalFov, aspect);
 
 		}
 
+		Frustum::Frustum() 
+		{
+			// Size 6 because we will store all the 6 Plane Objects in the array. Here NUM_PLANES = 6
+			frustum_planes.resize(NUM_PLANES);
+		}
+
+		Frustum::~Frustum()
+		{
+		}
+
+		void Frustum::MoveFrustumWithCamera(Vector3 pos_, Vector3 target_, Vector3 up_, float near_, float far_, float fov, float aspect)
+		{
+			// Calculations for Frustum
+			// Forward Vector - Normalized vector pointing from the camera position to the target position.
+			Vector3 forward_vector = (target_ - pos_);
+			forward_vector.normalize();
+			// Right Vector - Normalized cross product of forward_vector and up
+			Vector3 right_vector = forward_vector.crossProduct(up_);
+			right_vector.normalize();
+			//Normalized Up. Create copy and then normalize.
+			up_ = right_vector.crossProduct(forward_vector);
+			up_.normalize();
+
+			PrimitiveTypes::Float32 verticalFov = 0.33f * PrimitiveTypes::Constants::c_Pi_F32;
+			// Calculate half FOV (in radians)
+			float halfFov = verticalFov / 2.0f;
+			// Calculate the height of the near and far planes
+			float nearHeight = 2.0f * std::tan(halfFov) * near_;
+			float farHeight = 2.0f * std::tan(halfFov) * far_;
+			// Calculate the width of the near and far planes based on aspect ratio (assuming a square viewport)
+			float nearWidth = nearHeight * aspect;
+			float farWidth = farHeight * aspect;
+
+			// Calculate frustum points
+			Vector3 near_center = pos_ + forward_vector * near_;
+			Vector3 far_center = pos_ + forward_vector * far_;
+
+			// Use near plane center, move it up or down using the near plane height/2 value and move it right or left using the near plane width/2
+			Vector3 near_top_left	  = near_center + up_ * (nearHeight / 2) - right_vector * (nearWidth / 2);
+			Vector3 near_top_right	  = near_center + up_ * (nearHeight / 2) + right_vector * (nearWidth / 2);
+			Vector3 near_bottom_left  = near_center - up_ * (nearHeight / 2) - right_vector * (nearWidth / 2);
+			Vector3 near_bottom_right = near_center - up_ * (nearHeight / 2) + right_vector * (nearWidth / 2);
+
+			// Use far plane center, move it up or down using the far plane height/2 value and move it right or left using the far plane width/2
+			Vector3 far_top_left	  = far_center + up_ * (farHeight / 2) - right_vector * (farWidth / 2);
+			Vector3 far_top_right	  = far_center + up_ * (farHeight / 2) + right_vector * (farWidth / 2);
+			Vector3 far_bottom_left   = far_center - up_ * (farHeight / 2) - right_vector * (farWidth / 2);
+			Vector3 far_bottom_right  = far_center - up_ * (farHeight / 2) + right_vector * (farWidth / 2);
+
+			auto calculatePlane = [](Vector3 point1, Vector3 point2, Vector3 point3) {
+				Vector3 vec1 = point2 - point1;
+				Vector3 vec2 = point3 - point1;
+
+				Vector3 normal = vec1.crossProduct(vec2);
+				normal.normalize();
+				float d = -normal.dotProduct(point1);
+				return (new Vector4(normal.m_x, normal.m_y, normal.m_z, d));
+			};
+
+			// Calculate Vector4 for each plane
+			frustum_planes[LEFT_PLANE]	 = calculatePlane(near_bottom_left, far_bottom_left, far_top_left);
+			frustum_planes[RIGHT_PLANE]  = calculatePlane(near_top_right, far_top_right, near_bottom_right);
+			frustum_planes[TOP_PLANE]	 = calculatePlane(near_top_left, far_top_left, far_top_right);
+			frustum_planes[BOTTOM_PLANE] = calculatePlane(near_bottom_right, far_bottom_right, far_bottom_left);
+			frustum_planes[NEAR_PLANE]	 = calculatePlane(near_bottom_right, near_bottom_right, near_bottom_left);
+			frustum_planes[FAR_PLANE]	 = calculatePlane(far_bottom_right, far_top_right, far_top_left);
+			
+		}
+
 	}; // namespace Components
+
 }; // namespace PE
