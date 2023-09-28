@@ -6,31 +6,31 @@
 
 namespace PE {
 
-bool setLuaMetaDataOnly = 0;
+	bool setLuaMetaDataOnly = 0;
 
-void Register(PE::Components::LuaEnvironment *pLuaEnv, PE::GlobalRegistry *pRegistry)
-{
-	pLuaEnv->StartRootRegistrationTable();
-	// start root
+	void Register(PE::Components::LuaEnvironment* pLuaEnv, PE::GlobalRegistry* pRegistry)
 	{
-		pLuaEnv->StartRegistrationTable("PE");
-		// start root.PE
+		pLuaEnv->StartRootRegistrationTable();
+		// start root
 		{
-			pLuaEnv->StartRegistrationTable("Components");
-			// start root.PE.Components
+			pLuaEnv->StartRegistrationTable("PE");
+			// start root.PE
 			{
-				PE::Components::Component::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+				pLuaEnv->StartRegistrationTable("Components");
+				// start root.PE.Components
+				{
+					PE::Components::Component::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::LuaEnvironment::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::ClientLuaEnvironment::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::ServerLuaEnvironment::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::GameObjectManager::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::NetworkManager::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-						PE::Components::ClientNetworkManager::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-						PE::Components::ServerNetworkManager::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+					PE::Components::ClientNetworkManager::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+					PE::Components::ServerNetworkManager::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::ConnectionManager::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-						PE::Components::ClientConnectionManager::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-						PE::Components::ServerConnectionManager::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-						PE::Components::Camera::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+					PE::Components::ClientConnectionManager::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+					PE::Components::ServerConnectionManager::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+					PE::Components::Camera::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::StreamManager::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::EventManager::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::Input::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
@@ -40,11 +40,11 @@ void Register(PE::Components::LuaEnvironment *pLuaEnv, PE::GlobalRegistry *pRegi
 					PE::Components::Log::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::Light::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::SceneNode::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-						PE::Components::RootSceneNode::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-						PE::Components::CameraSceneNode::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-						PE::Components::JointSceneNode::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-						PE::Components::TextSceneNode::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-						PE::Components::InstancingSceneNode::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+					PE::Components::RootSceneNode::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+					PE::Components::CameraSceneNode::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+					PE::Components::JointSceneNode::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+					PE::Components::TextSceneNode::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+					PE::Components::InstancingSceneNode::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::MeshManager::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::Mesh::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::MeshInstance::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
@@ -59,27 +59,27 @@ void Register(PE::Components::LuaEnvironment *pLuaEnv, PE::GlobalRegistry *pRegi
 					PE::Components::PESSEH_POP_SHADERS::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::PESSEH_DRAW_Z_ONLY::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::Effect::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-                    #if APIABSTRACTION_D3D9 | APIABSTRACTION_D3D11
-                        PE::Components::DX9_XInput::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-					#elif PE_PLAT_IS_PS3 || PE_PLAT_IS_PSVITA
-						PE::Components::PS3_PadInput::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-					#else
-						pRegistry->getNextClassId(); // advance counter so that class ids don't differ between platforms
-                    #endif
-                    #if APIABSTRACTION_D3D9 | APIABSTRACTION_D3D11 | APIABSTRACTION_GLPC
-                        PE::Components::DX9_KeyboardMouse::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-					#else
-						pRegistry->getNextClassId(); // advance counter so that class ids don't differ between platforms
-					#endif
-			}
-			// end root.PE.Components
-			pLuaEnv->EndRegistrationTable();
+#if APIABSTRACTION_D3D9 | APIABSTRACTION_D3D11
+					PE::Components::DX9_XInput::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+#elif PE_PLAT_IS_PS3 || PE_PLAT_IS_PSVITA
+					PE::Components::PS3_PadInput::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+#else
+					pRegistry->getNextClassId(); // advance counter so that class ids don't differ between platforms
+#endif
+#if APIABSTRACTION_D3D9 | APIABSTRACTION_D3D11 | APIABSTRACTION_GLPC
+					PE::Components::DX9_KeyboardMouse::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+#else
+					pRegistry->getNextClassId(); // advance counter so that class ids don't differ between platforms
+#endif
+				}
+				// end root.PE.Components
+				pLuaEnv->EndRegistrationTable();
 
 
-			pLuaEnv->StartRegistrationTable("Events");
-			// start root.PE.Events
-			{
-				PE::Events::Event::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+				pLuaEnv->StartRegistrationTable("Events");
+				// start root.PE.Events
+				{
+					PE::Events::Event::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Events::Event_ADDED_AS_COMPONENT::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Events::Event_UPDATE::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Events::Event_SCENE_GRAPH_UPDATE::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
@@ -108,12 +108,12 @@ void Register(PE::Components::LuaEnvironment *pLuaEnv, PE::GlobalRegistry *pRegi
 					PE::Events::Event_ADDED_AS_COMPONENT::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Events::Event_CHARACTER_HIT_BY_MELEE::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 
-					#if APIABSTRACTION_IOS
-						// IOS Input Events
-						PE::Events::Event_IOS_TOUCH_MOVED::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
-					#else
-						pRegistry->getNextClassId(); // advance counter so that class ids don't differ between platforms
-					#endif
+#if APIABSTRACTION_IOS
+					// IOS Input Events
+					PE::Events::Event_IOS_TOUCH_MOVED::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+#else
+					pRegistry->getNextClassId(); // advance counter so that class ids don't differ between platforms
+#endif
 
 					// Button down events
 					PE::Events::Event_BUTTON_Y_DOWN::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
@@ -190,16 +190,16 @@ void Register(PE::Components::LuaEnvironment *pLuaEnv, PE::GlobalRegistry *pRegi
 
 					PE::Events::Event_SERVER_CLIENT_CONNECTION_ACK::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 
+				}
+				// end root.PE.Events
+				pLuaEnv->EndRegistrationTable();
 			}
-			// end root.PE.Events
+			// end root.PE
 			pLuaEnv->EndRegistrationTable();
 		}
-		// end root.PE
-		pLuaEnv->EndRegistrationTable();
-	}
-	// end root
-	pLuaEnv->EndRootRegistrationTable();
+		// end root
+		pLuaEnv->EndRootRegistrationTable();
 
-	setLuaMetaDataOnly = true; // make sure on next pass we dont reset class id, we just set registration values in lua
-}
+		setLuaMetaDataOnly = true; // make sure on next pass we dont reset class id, we just set registration values in lua
+	}
 };

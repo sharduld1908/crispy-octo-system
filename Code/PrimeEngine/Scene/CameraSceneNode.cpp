@@ -15,7 +15,7 @@ namespace PE {
 			m_near = 0.05f;
 			m_far = 2000.0f;
 
-			m_frustum = new Frustum();
+			frustum_planes.resize(NUM_PLANES);
 		}
 		void CameraSceneNode::addDefaultComponents()
 		{
@@ -68,21 +68,11 @@ namespace PE {
 
 			SceneNode::do_CALCULATE_TRANSFORMATIONS(pEvt);
 			
-			m_frustum->MoveFrustumWithCamera(pos, target, up, m_near, m_far, verticalFov, aspect);
+			MoveFrustumWithCamera(pos, target, up, m_near, m_far, verticalFov, aspect);
 
 		}
 
-		Frustum::Frustum() 
-		{
-			// Size 6 because we will store all the 6 Plane Objects in the array. Here NUM_PLANES = 6
-			frustum_planes.resize(NUM_PLANES);
-		}
-
-		Frustum::~Frustum()
-		{
-		}
-
-		void Frustum::MoveFrustumWithCamera(Vector3 pos_, Vector3 target_, Vector3 up_, float near_, float far_, float fov, float aspect)
+		void CameraSceneNode::MoveFrustumWithCamera(Vector3 pos_, Vector3 target_, Vector3 up_, float near_, float far_, float fov, float aspect)
 		{
 			// Calculations for Frustum
 			// Forward Vector - Normalized vector pointing from the camera position to the target position.

@@ -19,6 +19,7 @@
 
 // Sibling/Children includes
 #include "Event.h"
+#include <vector>
 
 struct lua_State;
 
@@ -57,7 +58,8 @@ namespace PE {
 		struct Event_GATHER_DRAWCALLS : public Event {
 			PE_DECLARE_CLASS(Event_GATHER_DRAWCALLS);
 
-			Event_GATHER_DRAWCALLS(int& threadOwnershipMask) :m_threadOwnershipMask(threadOwnershipMask) {}
+			Event_GATHER_DRAWCALLS(int& threadOwnershipMask) 
+				: m_threadOwnershipMask(threadOwnershipMask) {}
 			virtual ~Event_GATHER_DRAWCALLS() {}
 
 			Event_GATHER_DRAWCALLS& operator=(const Event_GATHER_DRAWCALLS& c) { assert(!"not supported. if need one, need to chnage reference to pointer."); return *this; }
@@ -65,6 +67,7 @@ namespace PE {
 			Matrix4x4 m_projectionTransform;
 			Matrix4x4 m_parentWorldTransform;
 			Matrix4x4 m_viewInvTransform;
+			std::vector<Vector4*> m_frustum_planes;
 
 			Vector3 m_eyePos;
 			Vector3 m_eyeDir;
@@ -97,6 +100,7 @@ namespace PE {
 			PE_DECLARE_CLASS(Event_PRE_GATHER_DRAWCALLS);
 			virtual ~Event_PRE_GATHER_DRAWCALLS() {}
 
+			//Frustum* frustum;
 			Matrix4x4 m_projectionViewTransform;
 			Vector3 m_eyePos;
 		};

@@ -197,7 +197,6 @@ namespace PE {
 			pMeshCaller->m_numVisibleInstances = pMeshCaller->m_instances.m_size; // assume all instances are visible
 
 			bool bAddAABB = true;
-
 			if (bAddAABB) {
 			
 				for (int iInst = 0; iInst < pMeshCaller->m_instances.m_size; ++iInst)
@@ -234,9 +233,13 @@ namespace PE {
 				}
 			}
 
+			bool performCulling = false;
+			if (pDrawEvent) {
+				performCulling = true;
+			}
 			// check for bounding volumes here and mark each instance as visible or not visible and set m_numVisibleInstances to number of visible instances
 			// debug testing of instance culling. do collision check instead.
-			if (false && pMeshCaller->m_performBoundingVolumeCulling)
+			if (performCulling && pMeshCaller->m_performBoundingVolumeCulling)
 			{
 				pMeshCaller->m_numVisibleInstances = 0;
 

@@ -208,7 +208,7 @@ namespace PE {
 							drawEvt->m_projectionViewTransform = (pLight->m_viewToProjectedTransform * pLight->m_worldToViewTransform);
 							drawEvt->m_eyePos = pLight->m_base.getPos();
 						}
-
+						std::copy(pcam->frustum_planes.begin(), pcam->frustum_planes.end(), std::back_inserter(drawEvt->m_frustum_planes));
 						Events::EventQueueManager::Instance()->add(hdrawEvt);
 					}
 

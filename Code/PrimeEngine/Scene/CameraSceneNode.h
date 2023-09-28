@@ -27,11 +27,8 @@ namespace PE {
 
 	namespace Components {
 
-		class Frustum {
-		private:
-			std::vector<Vector4*> frustum_planes;
-
-		public:
+		struct CameraSceneNode : public SceneNode
+		{
 
 			enum FRUSTUM_PLANES {
 				TOP_PLANE = 0,
@@ -42,20 +39,6 @@ namespace PE {
 				FAR_PLANE = 5,
 				NUM_PLANES = 6
 			};
-
-			Vector4* getFrustumPlane(FRUSTUM_PLANES plane_id) {
-				return frustum_planes[plane_id];
-			}
-
-			Frustum();
-
-			void MoveFrustumWithCamera(Vector3 pos_, Vector3 target_, Vector3 up_, float near_, float far_, float fov, float aspect);
-
-			~Frustum();
-		};
-
-		struct CameraSceneNode : public SceneNode
-		{
 
 			PE_DECLARE_CLASS(CameraSceneNode);
 
@@ -70,7 +53,11 @@ namespace PE {
 			PE_DECLARE_IMPLEMENT_EVENT_HANDLER_WRAPPER(do_CALCULATE_TRANSFORMATIONS);
 			virtual void do_CALCULATE_TRANSFORMATIONS(Events::Event* pEvt);
 
-			void CreateAndDrawFrustum();
+			Vector4* getFrustumPlane(FRUSTUM_PLANES plane_id) {
+				return frustum_planes[plane_id];
+			}
+
+			void MoveFrustumWithCamera(Vector3 pos_, Vector3 target_, Vector3 up_, float near_, float far_, float fov, float aspect);
 
 			// Individual events -------------------------------------------------------
 
@@ -80,7 +67,7 @@ namespace PE {
 			Matrix4x4 m_viewToProjectedTransform; // objects in local (view) space are multiplied by this to get them to screen space
 			float m_near, m_far;
 
-			Frustum* m_frustum;
+			std::vector<Vector4*> frustum_planes;
 
 		};
 
