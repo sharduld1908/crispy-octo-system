@@ -185,16 +185,14 @@ namespace PE {
 
 			if (pMeshCaller->m_instances.m_size == 0)
 				return; // no instances of this mesh
-			
-			Events::Event_GATHER_DRAWCALLS* pDrawEvent = NULL;
-			Events::Event_GATHER_DRAWCALLS_Z_ONLY* pZOnlyDrawEvent = NULL;
 
-			if (pEvt->isInstanceOf<Events::Event_GATHER_DRAWCALLS>())
-				pDrawEvent = (Events::Event_GATHER_DRAWCALLS*)(pEvt);
-			else
-				pZOnlyDrawEvent = (Events::Event_GATHER_DRAWCALLS_Z_ONLY*)(pEvt);
-
-			pMeshCaller->m_numVisibleInstances = pMeshCaller->m_instances.m_size; // assume all instances are visible
+			//*******************************************************************************************************************************************
+			//*******************************************************************************************************************************************
+			// 
+			// Draw Axis Aligned Bounded Boxes.
+			// 
+			//*******************************************************************************************************************************************
+			//*******************************************************************************************************************************************
 
 			bool bAddAABB = true;
 			if (bAddAABB) {
@@ -233,29 +231,104 @@ namespace PE {
 				}
 			}
 
-			bool performCulling = false;
-			if (pDrawEvent) {
-				performCulling = true;
-			}
+
+			//*******************************************************************************************************************************************
+			//*******************************************************************************************************************************************
+			// 
+			// Start the Frustum Culling Logic
+			// 
+			//*******************************************************************************************************************************************
+			//*******************************************************************************************************************************************
+
+			pMeshCaller->m_numVisibleInstances = pMeshCaller->m_instances.m_size; // assume all instances are visible
+
+			Events::Event_GATHER_DRAWCALLS* pDrawEvent = NULL;
+			Events::Event_GATHER_DRAWCALLS_Z_ONLY* pZOnlyDrawEvent = NULL;
+
+			if (pEvt->isInstanceOf<Events::Event_GATHER_DRAWCALLS>())
+				pDrawEvent = (Events::Event_GATHER_DRAWCALLS*)(pEvt);
+			else
+				pZOnlyDrawEvent = (Events::Event_GATHER_DRAWCALLS_Z_ONLY*)(pEvt);
+
 			// check for bounding volumes here and mark each instance as visible or not visible and set m_numVisibleInstances to number of visible instances
 			// debug testing of instance culling. do collision check instead.
-			if (performCulling && pMeshCaller->m_performBoundingVolumeCulling)
+			if (pMeshCaller->m_performBoundingVolumeCulling)
 			{
 				pMeshCaller->m_numVisibleInstances = 0;
+				std::vector<Vector4*> frustum_planes;
 
-				for (int iInst = 0; iInst < pMeshCaller->m_instances.m_size; ++iInst)
-				{
-					MeshInstance* pInst = pMeshCaller->m_instances[iInst].getObject<MeshInstance>();
-					if (iInst % 2)
+				if(pDrawEvent) {
+					std::copy(pDrawEvent->m_frustum_planes.begin(), pDrawEvent->m_frustum_planes.end(), std::back_inserter(frustum_planes));
+
+					for (int iInst = 0; iInst < pMeshCaller->m_instances.m_size; ++iInst)
 					{
-						pInst->m_culledOut = false;
-						++pMeshCaller->m_numVisibleInstances;
+						bool isVisible = true;
+						MeshInstance* pInst = pMeshCaller->m_instances[iInst].getObject<MeshInstance>();
+						if (pInst->AABB_Coordinates.m_size == 8) {
+							
+							SceneNode* pSN = pInst->getFirstParentByTypePtr<SceneNode>();
+							Matrix4x4 worldTransform = pSN->m_base;
+
+							for (int i = 0; i < pInst->AABB_Coordinates.m_size; i++) {
+								Vector3 curr_corner = worldTransform * pInst->AABB_Coordinates[i];
+								
+								Vector3 curr_plane0 = frustum_planes[0]->asVector3Ref();
+								float d0 = frustum_planes[0]->m_w;
+								if (curr_corner.dotProduct(curr_plane0) + d0 <= 0.0f) {
+									isVisible = false;
+									break;
+								}
+
+								Vector3 curr_plane1 = frustum_planes[1]->asVector3Ref();
+								float d1 = frustum_planes[1]->m_w;
+								if (curr_corner.dotProduct(curr_plane1) + d1 <= 0.0f) {
+									isVisible = false;
+									break;
+								}
+
+								Vector3 curr_plane2 = frustum_planes[2]->asVector3Ref();
+								float d2 = frustum_planes[2]->m_w;
+								if (curr_corner.dotProduct(curr_plane2) + d2 <= 0.0f) {
+									isVisible = false;
+									break;
+								}
+
+								Vector3 curr_plane3 = frustum_planes[3]->asVector3Ref();
+								float d3 = frustum_planes[3]->m_w;
+								if (curr_corner.dotProduct(curr_plane3) + d3 <= 0.0f) {
+									isVisible = false;
+									break;
+								}
+
+								Vector3 curr_plane4 = frustum_planes[4]->asVector3Ref();
+								float d4 = frustum_planes[4]->m_w;
+								if (curr_corner.dotProduct(curr_plane4) + d4 <= 0.0f) {
+									isVisible = false;
+									break;
+								}
+
+								Vector3 curr_plane5 = frustum_planes[5]->asVector3Ref();
+								float d5 = frustum_planes[5]->m_w;
+								if (curr_corner.dotProduct(curr_plane5) + d5 <= 0.0f) {
+									isVisible = false;
+									break;
+								}
+							}
+						}
+
+						if (isVisible)
+						{
+							pInst->m_culledOut = false;
+							++pMeshCaller->m_numVisibleInstances;
+						}
+						else
+						{
+							pInst->m_culledOut = true;
+						}
 					}
-					else
-					{
-						pInst->m_culledOut = true;
-					}
+
 				}
+				
 			}
 
 			DrawList* pDrawList = pDrawEvent ? DrawList::Instance() : DrawList::ZOnlyInstance();
