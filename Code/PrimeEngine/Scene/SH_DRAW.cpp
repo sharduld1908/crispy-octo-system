@@ -274,42 +274,42 @@ namespace PE {
 								
 								Vector3 curr_plane0 = frustum_planes[0]->asVector3Ref();
 								float d0 = frustum_planes[0]->m_w;
-								if (curr_corner.dotProduct(curr_plane0) + d0 <= 0.0f) {
+								if (curr_corner.dotProduct(curr_plane0) + d0 <= 0.5f) {
 									isVisible = false;
 									break;
 								}
 
 								Vector3 curr_plane1 = frustum_planes[1]->asVector3Ref();
 								float d1 = frustum_planes[1]->m_w;
-								if (curr_corner.dotProduct(curr_plane1) + d1 <= 0.0f) {
+								if (curr_corner.dotProduct(curr_plane1) + d1 <= 0.5f) {
 									isVisible = false;
 									break;
 								}
 
 								Vector3 curr_plane2 = frustum_planes[2]->asVector3Ref();
 								float d2 = frustum_planes[2]->m_w;
-								if (curr_corner.dotProduct(curr_plane2) + d2 <= 0.0f) {
+								if (curr_corner.dotProduct(curr_plane2) + d2 <= 0.5f) {
 									isVisible = false;
 									break;
 								}
 
 								Vector3 curr_plane3 = frustum_planes[3]->asVector3Ref();
 								float d3 = frustum_planes[3]->m_w;
-								if (curr_corner.dotProduct(curr_plane3) + d3 <= 0.0f) {
+								if (curr_corner.dotProduct(curr_plane3) + d3 <= 0.5f) {
 									isVisible = false;
 									break;
 								}
 
 								Vector3 curr_plane4 = frustum_planes[4]->asVector3Ref();
 								float d4 = frustum_planes[4]->m_w;
-								if (curr_corner.dotProduct(curr_plane4) + d4 <= 0.0f) {
+								if (curr_corner.dotProduct(curr_plane4) + d4 <= 0.5f) {
 									isVisible = false;
 									break;
 								}
 
 								Vector3 curr_plane5 = frustum_planes[5]->asVector3Ref();
 								float d5 = frustum_planes[5]->m_w;
-								if (curr_corner.dotProduct(curr_plane5) + d5 <= 0.0f) {
+								if (curr_corner.dotProduct(curr_plane5) + d5 <= 0.5f) {
 									isVisible = false;
 									break;
 								}

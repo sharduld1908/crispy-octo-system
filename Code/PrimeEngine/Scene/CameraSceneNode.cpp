@@ -68,11 +68,11 @@ namespace PE {
 
 			SceneNode::do_CALCULATE_TRANSFORMATIONS(pEvt);
 			
-			MoveFrustumWithCamera(pos, target, up, m_near, m_far, verticalFov, aspect);
+			MoveFrustumWithCamera(pos, target, up, m_near, m_far, aspect);
 
 		}
 
-		void CameraSceneNode::MoveFrustumWithCamera(Vector3 pos_, Vector3 target_, Vector3 up_, float near_, float far_, float fov, float aspect)
+		void CameraSceneNode::MoveFrustumWithCamera(Vector3 pos_, Vector3 target_, Vector3 up_, float near_, float far_, float aspect)
 		{
 			// Calculations for Frustum
 			// Forward Vector - Normalized vector pointing from the camera position to the target position.
@@ -85,7 +85,7 @@ namespace PE {
 			up_ = right_vector.crossProduct(forward_vector);
 			up_.normalize();
 
-			PrimitiveTypes::Float32 verticalFov = 0.33f * PrimitiveTypes::Constants::c_Pi_F32;
+			PrimitiveTypes::Float32 verticalFov = 0.362f * PrimitiveTypes::Constants::c_Pi_F32;
 			// Calculate half FOV (in radians)
 			float halfFov = verticalFov / 2.0f;
 			// Calculate the height of the near and far planes

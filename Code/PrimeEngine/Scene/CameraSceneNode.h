@@ -57,7 +57,7 @@ namespace PE {
 				return frustum_planes[plane_id];
 			}
 
-			void MoveFrustumWithCamera(Vector3 pos_, Vector3 target_, Vector3 up_, float near_, float far_, float fov, float aspect);
+			void MoveFrustumWithCamera(Vector3 pos_, Vector3 target_, Vector3 up_, float near_, float far_, float aspect);
 
 			// Individual events -------------------------------------------------------
 
