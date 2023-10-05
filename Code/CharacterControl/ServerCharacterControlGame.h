@@ -5,33 +5,33 @@
 #include "GlobalRegistry.h"
 
 namespace CharacterControl {
-namespace Components {
+	namespace Components {
 
-	struct ServerCharacterControlGame : public PE::Components::ServerGame
-	{
-		// virtual methods to be overridden by inherited games
-		virtual void registerClasses() {}
-
-		// Singleton ------------------------------------------------------------------
-		static ServerGame* ConstructCallback(PE::GameContext &context, PE::MemoryArena arena)
+		struct ServerCharacterControlGame : public PE::Components::ServerGame
 		{
-			ServerCharacterControlGame *pGame = new(arena) ServerCharacterControlGame(context, arena, PE::Handle());
-			context.m_pGame = pGame;
-			return pGame;
-		}
+			// virtual methods to be overridden by inherited games
+			virtual void registerClasses() {}
 
-		ServerCharacterControlGame(PE::GameContext &context, PE::MemoryArena arena, PE::Handle hMyself) : PE::Components::ServerGame(context, arena, hMyself)
-		{
-		}
+			// Singleton ------------------------------------------------------------------
+			static ServerGame* ConstructCallback(PE::GameContext& context, PE::MemoryArena arena)
+			{
+				ServerCharacterControlGame* pGame = new(arena) ServerCharacterControlGame(context, arena, PE::Handle());
+				context.m_pGame = pGame;
+				return pGame;
+			}
 
-		// Virtual methods
-		virtual int initGame();
-		//
-		// override in case need special game loop. usually not needed
-		//virtual int runGame();
-	};
+			ServerCharacterControlGame(PE::GameContext& context, PE::MemoryArena arena, PE::Handle hMyself) : PE::Components::ServerGame(context, arena, hMyself)
+			{
+			}
 
-}; // namespace Components
+			// Virtual methods
+			virtual int initGame();
+			//
+			// override in case need special game loop. usually not needed
+			//virtual int runGame();
+		};
+
+	}; // namespace Components
 }; // namespace Basic
 
 #endif

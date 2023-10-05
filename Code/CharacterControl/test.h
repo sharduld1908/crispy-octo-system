@@ -4,7 +4,7 @@ extern "C"
 	void __stdcall testfunc_c_stdcall(void);
 	void __fastcall testfunc_c_fastcall(void);
 
-	
+
 }
 
 extern int number_cpp_extern;

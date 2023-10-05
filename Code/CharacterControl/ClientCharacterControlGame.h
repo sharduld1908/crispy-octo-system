@@ -14,14 +14,14 @@ namespace CharacterControl {
 			virtual void registerClasses() {}
 
 			// Singleton ------------------------------------------------------------------
-			static PE::Handle ConstructCallback(PE::GameContext &context, PE::MemoryArena arena)
+			static PE::Handle ConstructCallback(PE::GameContext& context, PE::MemoryArena arena)
 			{
 				PE::Handle handle("GAME", sizeof(ClientCharacterControlGame));
 				context.m_pGame = new(handle) ClientCharacterControlGame(context, arena, handle);
 				return handle;
 			}
 
-			ClientCharacterControlGame(PE::GameContext &context, PE::MemoryArena arena, PE::Handle hMyself) : PE::Components::ClientGame(context, arena, hMyself)
+			ClientCharacterControlGame(PE::GameContext& context, PE::MemoryArena arena, PE::Handle hMyself) : PE::Components::ClientGame(context, arena, hMyself)
 			{
 			}
 

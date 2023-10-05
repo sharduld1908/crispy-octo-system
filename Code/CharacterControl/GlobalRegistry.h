@@ -9,7 +9,7 @@ namespace PE
 		struct LuaEnvironment;
 	}
 }
-namespace CharacterControl{
-	void Register(PE::Components::LuaEnvironment *pLuaEnv, PE::GlobalRegistry *pRegistry);
+namespace CharacterControl {
+	void Register(PE::Components::LuaEnvironment* pLuaEnv, PE::GlobalRegistry* pRegistry);
 };
 #endif

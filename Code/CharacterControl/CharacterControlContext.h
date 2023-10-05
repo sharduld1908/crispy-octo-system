@@ -4,7 +4,7 @@
 #include "PrimeEngine/Utils/PEClassDecl.h"
 
 namespace CharacterControl {
-	namespace Components{
+	namespace Components {
 		struct GameObjectManagerAddon;
 		struct TankGameControls;
 		struct SpaceShipGameControls;
@@ -12,12 +12,12 @@ namespace CharacterControl {
 
 	struct CharacterControlContext : PE::PEAllocatableAndDefragmentable
 	{
-		Components::GameObjectManagerAddon *getGameObjectManagerAddon(){return m_pGameObjectManagerAddon;}
-		Components::TankGameControls *getTankGameControls(){return m_pTankGameControls;}
-		Components::SpaceShipGameControls *getSpaceShipGameControls(){return m_pSpaceShipGameControls;}
-		Components::GameObjectManagerAddon *m_pGameObjectManagerAddon;
-		Components::TankGameControls *m_pTankGameControls;
-		Components::SpaceShipGameControls *m_pSpaceShipGameControls;
+		Components::GameObjectManagerAddon* getGameObjectManagerAddon() { return m_pGameObjectManagerAddon; }
+		Components::TankGameControls* getTankGameControls() { return m_pTankGameControls; }
+		Components::SpaceShipGameControls* getSpaceShipGameControls() { return m_pSpaceShipGameControls; }
+		Components::GameObjectManagerAddon* m_pGameObjectManagerAddon;
+		Components::TankGameControls* m_pTankGameControls;
+		Components::SpaceShipGameControls* m_pSpaceShipGameControls;
 	};
 
 }; // namespace CharacterControl
