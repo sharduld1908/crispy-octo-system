@@ -28,6 +28,7 @@ namespace PE {
 			DEFAULT = 0,
 			STOP_DISTRIBUTION = 1,
 		};
+
 		// Represents event. Has a handle to data specific to an event
 		struct Event : public PEClass
 		{

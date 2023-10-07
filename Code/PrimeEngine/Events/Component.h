@@ -23,7 +23,6 @@
 // Sibling/Children includes
 #include "Event.h"
 
-
 namespace PE {
 
 	namespace Components {
@@ -155,8 +154,6 @@ namespace PE {
 			template <typename T>
 			static T* getFirstComponent(Handle hObj) { return hObj.getObject<Component>()->getFirstComponent<T>(); }
 
-
-
 			Handle getFirstComponentRev(int classId)
 			{
 				for (PrimitiveTypes::Int32 i = m_components.m_size - 1; i >= 0; --i)
@@ -234,9 +231,6 @@ namespace PE {
 
 			void _addStaticMethodToHandlerQueue(int evtClassId, StaticHandlerMethod method);
 
-
-
-
 			void propagateEventHandlersToParents();
 			void propagateEventHandlersToParent(Handle hParent, int* pAllowedEvents);
 
@@ -280,8 +274,7 @@ namespace PE {
 
 		};
 
-
-
 	}; // namespace Components
+
 }; // namespace PE
 #endif

@@ -58,11 +58,12 @@
 
 		//Run the game
 
-		if(!PE::Components::ServerGlobalGameCallbacks::getGameInstance()->runGame()) 
+		if (!PE::Components::ServerGlobalGameCallbacks::getGameInstance()->runGame()) {
 			return RETURN_VALUE;
-
-        if(!PE::Components::ClientGlobalGameCallbacks::getGameInstance()->runGame()) 
+		}
+		if (!PE::Components::ClientGlobalGameCallbacks::getGameInstance()->runGame()) {
 			return RETURN_VALUE;
+		}
 
 		return RETURN_VALUE;
 #if !PE_PLAT_IS_IOS

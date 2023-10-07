@@ -6,7 +6,7 @@
 #include "PrimeEngineIncludes.h"
 
 namespace PE {
-	void gameThreadFunctionJob(void *params);
+	void gameThreadFunctionJob(void* params);
 }; // namespace PE
 
 #endif

@@ -41,7 +41,6 @@ namespace CharacterControl {
 			// grey-ish background
 			m_pContext->getGPUScreen()->setClearColor(Vector4(0.1f, 0.1f, 0.1f, 0.0f));
 
-
 			// game controls read input queue and post events onto general queue
 			// the events from general queue are then passed on to game components
 			PE::Handle hDefaultGameControls("GAME_CONTROLS", sizeof(DefaultGameControls));
@@ -193,9 +192,7 @@ namespace CharacterControl {
 			m_pContext->getGPUScreen()->AcquireRenderContextOwnership(m_pContext->m_gameThreadThreadOwnershipMask);
 
 			bool spawnALotOfMeshes = false;
-
 			int maxX = 10; // maybe need more to get framerate lower
-
 			if (spawnALotOfMeshes)
 			{
 				for (int ix = 0; ix < maxX; ++ix)
