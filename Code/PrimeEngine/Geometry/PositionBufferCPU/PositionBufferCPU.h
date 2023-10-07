@@ -17,9 +17,30 @@
 
 struct PositionBufferCPU : PE::PEAllocatableAndDefragmentable
 {
+	struct Min_Max_AABB
+	{
+		struct Pos_Coordinates
+		{
+			PrimitiveTypes::Float32 m_x_pos;
+			PrimitiveTypes::Float32 m_y_pos;
+			PrimitiveTypes::Float32 m_z_pos;
+		};
+
+		Pos_Coordinates max_coordinates;
+		Pos_Coordinates min_coordinates;
+	};
+
+	Min_Max_AABB min_max_aabb;
+
 	PositionBufferCPU(PE::GameContext &context, PE::MemoryArena arena) : m_values(context, arena, 0)
 	{
 		m_pContext = &context;
+		min_max_aabb.max_coordinates.m_x_pos = INT_MIN;
+		min_max_aabb.max_coordinates.m_y_pos = INT_MIN;
+		min_max_aabb.max_coordinates.m_z_pos = INT_MIN;
+		min_max_aabb.min_coordinates.m_x_pos = INT_MAX;
+		min_max_aabb.min_coordinates.m_y_pos = INT_MAX;
+		min_max_aabb.min_coordinates.m_z_pos = INT_MAX;
 	}
 
 	// Reads the specified buffer from file

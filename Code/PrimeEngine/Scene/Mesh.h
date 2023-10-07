@@ -24,84 +24,84 @@
 // Sibling/Children includes
 
 namespace PE {
-struct MaterialSetCPU;
-namespace Components {
+	struct MaterialSetCPU;
+	namespace Components {
 
-struct Mesh : public Component
-{
-	PE_DECLARE_CLASS(Mesh);
+		struct Mesh : public Component
+		{
+			PE_DECLARE_CLASS(Mesh);
 
-	// Constructor -------------------------------------------------------------
-	Mesh(PE::GameContext &context, PE::MemoryArena arena, Handle hMyself);
+			// Constructor -------------------------------------------------------------
+			Mesh(PE::GameContext& context, PE::MemoryArena arena, Handle hMyself);
 
-	virtual ~Mesh(){}
+			virtual ~Mesh() {}
 
-	virtual void addDefaultComponents();
+			virtual void addDefaultComponents();
 
-	// need this to maintain m_instances
-	virtual void addComponent(Handle hComponent, int *pAllowedEvents = NULL);
-	virtual void removeComponent(int index);
+			// need this to maintain m_instances
+			virtual void addComponent(Handle hComponent, int* pAllowedEvents = NULL);
+			virtual void removeComponent(int index);
+
+			// Methods -----------------------------------------------------------------
+
+			// Builds a Mesh from the data in system memory
+			void loadFromMeshCPU_needsRC(MeshCPU& mcpu, int& threadOwnershipMask);
+			EPEVertexFormat updateGeoFromMeshCPU_needsRC(MeshCPU& mcpu, int& threadOwnershipMask);
+
+			// Component ------------------------------------------------------------
+
+			// Individual events -------------------------------------------------------
+
+			Handle& nextAdditionalShaderValue(int size)
+			{
+				m_additionalShaderValues.add(Handle("RAW_DATA", size));
+				return m_additionalShaderValues[m_additionalShaderValues.m_size - 1];
+			}
 
 
-	// Methods -----------------------------------------------------------------
-
-	// Builds a Mesh from the data in system memory
-	void loadFromMeshCPU_needsRC(MeshCPU &mcpu, int &threadOwnershipMask);
-	EPEVertexFormat updateGeoFromMeshCPU_needsRC(MeshCPU &mcpu, int &threadOwnershipMask);
-
-	// Component ------------------------------------------------------------
-
-	// Individual events -------------------------------------------------------
-	
-	Handle &nextAdditionalShaderValue(int size)
-	{
-		m_additionalShaderValues.add(Handle("RAW_DATA", size));
-		return m_additionalShaderValues[m_additionalShaderValues.m_size-1];
-	}
+			void overrideEffects(Handle newEffect);
+			void overrideZOnlyEffects(Handle newEffect);
 
 
-	void overrideEffects(Handle newEffect);
-	void overrideZOnlyEffects(Handle newEffect);
-	
+			void popEffects();
 
-	void popEffects();
+			PrimitiveTypes::Bool hasPushedEffects();
+			// Member variables --------------------------------------------------------
+			//Handle m_hVertexBufferGPU;
+			Handle m_hTexCoordBufferCPU;
 
-	PrimitiveTypes::Bool hasPushedEffects();
-	// Member variables --------------------------------------------------------
-	//Handle m_hVertexBufferGPU;
-	Handle m_hTexCoordBufferCPU;
-	
-	Handle m_hIndexBufferGPU;
-	
-	Handle m_hMaterialSetGPU;
+			Handle m_hIndexBufferGPU;
 
-	PrimitiveTypes::Bool m_processShowEvt;
+			Handle m_hMaterialSetGPU;
 
-	Handle m_hPositionBufferCPU;
-	Handle m_hNormalBufferCPU;
-	Handle m_hTangentBufferCPU;
+			PrimitiveTypes::Bool m_processShowEvt;
 
-	Handle m_hSkinWeightsCPU;
+			Handle m_hPositionBufferCPU;
+			Handle m_hNormalBufferCPU;
+			Handle m_hTangentBufferCPU;
 
-	Array<Handle> m_additionalShaderValues;
+			Handle m_hSkinWeightsCPU;
 
-	PEStaticVector<Handle, 4> m_vertexBuffersGPUHs;
+			Array<Handle> m_additionalShaderValues;
 
-	Array< PEStaticVector<Handle, 4> > m_effects;
-	Array< PEStaticVector<Handle, 4> > m_zOnlyEffects;
-	Array< PEStaticVector<Handle, 4> > m_instanceEffects;
+			PEStaticVector<Handle, 4> m_vertexBuffersGPUHs;
 
-	Array<Handle, 1> m_instances; // special cahce of instances
-	Array<Handle> m_lods;
-    int m_numVisibleInstances;
-	
-	Handle m_hAnimationSetGPU; // reference to animation stored in gpu buffer
-	
-	bool m_bDrawControl;
-    
-    bool m_performBoundingVolumeCulling;
-};
+			Array< PEStaticVector<Handle, 4> > m_effects;
+			Array< PEStaticVector<Handle, 4> > m_zOnlyEffects;
+			Array< PEStaticVector<Handle, 4> > m_instanceEffects;
 
-}; // namespace Components
+			Array<Handle, 1> m_instances; // special cahce of instances
+			Array<Handle> m_lods;
+			int m_numVisibleInstances;
+
+			Handle m_hAnimationSetGPU; // reference to animation stored in gpu buffer
+
+			bool m_bDrawControl;
+
+			bool m_performBoundingVolumeCulling;
+		};
+
+	}; // namespace Components
+
 }; // namespace PE
 #endif

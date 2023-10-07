@@ -121,7 +121,7 @@ namespace CharacterControl {
 			MeshInstance* pMeshInstance = new(hMeshInstance) MeshInstance(*m_pContext, m_arena, hMeshInstance);
 
 			pMeshInstance->addDefaultComponents();
-			pMeshInstance->initFromFile("kingtiger.x_main_mesh.mesha", "Default", threadOwnershipMask);
+			
 
 			// need to create a scene node for this mesh
 			PE::Handle hSN("SCENE_NODE", sizeof(SceneNode));
@@ -130,6 +130,8 @@ namespace CharacterControl {
 
 			Vector3 spawnPos(-36.0f + 6.0f * index, 0, 21.0f);
 			pSN->m_base.setPos(spawnPos);
+
+			pMeshInstance->initFromFile("kingtiger.x_main_mesh.mesha", "Default", threadOwnershipMask);
 
 			pSN->addComponent(hMeshInstance);
 

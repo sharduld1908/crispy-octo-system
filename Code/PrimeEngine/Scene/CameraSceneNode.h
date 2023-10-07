@@ -21,32 +21,33 @@
 // Sibling/Children includes
 
 namespace PE {
-namespace Components {
 
-struct CameraSceneNode : public SceneNode
-{
+	namespace Components {
 
-	PE_DECLARE_CLASS(CameraSceneNode);
+		struct CameraSceneNode : public SceneNode
+		{
 
-	// Constructor -------------------------------------------------------------
-	CameraSceneNode(PE::GameContext &context, PE::MemoryArena arena, Handle hMyself);
+			PE_DECLARE_CLASS(CameraSceneNode);
 
-	virtual ~CameraSceneNode(){}
+			// Constructor -------------------------------------------------------------
+			CameraSceneNode(PE::GameContext& context, PE::MemoryArena arena, Handle hMyself);
 
-	// Component ------------------------------------------------------------
-	virtual void addDefaultComponents();
+			virtual ~CameraSceneNode() {}
 
-	PE_DECLARE_IMPLEMENT_EVENT_HANDLER_WRAPPER(do_CALCULATE_TRANSFORMATIONS);
-	virtual void do_CALCULATE_TRANSFORMATIONS(Events::Event *pEvt);
+			// Component ------------------------------------------------------------
+			virtual void addDefaultComponents();
 
-	// Individual events -------------------------------------------------------
-	
-	Matrix4x4 m_worldToViewTransform; // objects in world space are multiplied by this to get them into camera's coordinate system (view space)
-	Matrix4x4 m_worldToViewTransform2;
-	Matrix4x4 m_worldTransform2;
-	Matrix4x4 m_viewToProjectedTransform; // objects in local (view) space are multiplied by this to get them to screen space
-	float m_near, m_far;
-};
-}; // namespace Components
+			PE_DECLARE_IMPLEMENT_EVENT_HANDLER_WRAPPER(do_CALCULATE_TRANSFORMATIONS);
+			virtual void do_CALCULATE_TRANSFORMATIONS(Events::Event* pEvt);
+
+			// Individual events -------------------------------------------------------
+
+			Matrix4x4 m_worldToViewTransform; // objects in world space are multiplied by this to get them into camera's coordinate system (view space)
+			Matrix4x4 m_worldToViewTransform2;
+			Matrix4x4 m_worldTransform2;
+			Matrix4x4 m_viewToProjectedTransform; // objects in local (view) space are multiplied by this to get them to screen space
+			float m_near, m_far;
+		};
+	}; // namespace Components
 }; // namespace PE
 #endif

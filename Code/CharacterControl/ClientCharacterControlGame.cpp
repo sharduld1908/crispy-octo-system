@@ -123,7 +123,6 @@ namespace CharacterControl {
 
 					pSoldierAnimSM->m_debugAnimIdOffset = 0;// rand() % 3;
 
-
 					PE::Handle hSkeletonInstance("SkeletonInstance", sizeof(SkeletonInstance));
 					SkeletonInstance* pSkelInst = new(hSkeletonInstance) SkeletonInstance(*m_pContext, m_arena, hSkeletonInstance,
 						hSoldierAnimSM);
@@ -131,7 +130,6 @@ namespace CharacterControl {
 
 					pSkelInst->initFromFiles("soldier_Soldier_Skeleton.skela", "Default", m_pContext->m_gameThreadThreadOwnershipMask);
 					pSkelInst->setAnimSet("soldier_Soldier_Skeleton.animseta", "Default");
-
 
 					{
 						PE::Handle hMeshInstance("MeshInstance", sizeof(MeshInstance));
@@ -142,7 +140,6 @@ namespace CharacterControl {
 
 						pSkelInst->addComponent(hMeshInstance);
 					}
-
 
 					//{
 					//	// create a scene node for gun attached to a joint
@@ -162,7 +159,6 @@ namespace CharacterControl {
 					//	// add gun scene node to the skin
 					//	pSkelInst->addComponent(hMyGunSN);
 					//}
-
 
 					Events::SoldierNPCAnimSM_Event_WALK evt;
 					pSkelInst->handleEvent(&evt);
@@ -191,8 +187,10 @@ namespace CharacterControl {
 
 			m_pContext->getGPUScreen()->AcquireRenderContextOwnership(m_pContext->m_gameThreadThreadOwnershipMask);
 
-			bool spawnALotOfMeshes = false;
+			bool spawnALotOfMeshes = true;
+
 			int maxX = 10; // maybe need more to get framerate lower
+
 			if (spawnALotOfMeshes)
 			{
 				for (int ix = 0; ix < maxX; ++ix)
@@ -203,7 +201,7 @@ namespace CharacterControl {
 						SceneNode* pMainSN = new(hSN) SceneNode(*m_pContext, m_arena, hSN);
 						pMainSN->addDefaultComponents();
 
-						pMainSN->m_base.setPos(Vector3(ix * 4.0f, 0, -15.0f - iy * 2.0f));
+						pMainSN->m_base.setPos(Vector3(ix * 2.5f, 0, -12.0f - iy * 2.0f));
 
 						PE::Handle hImrodMeshInst = PE::Handle("MeshInstance", sizeof(MeshInstance));
 						MeshInstance* pImrodMeshInst = new(hImrodMeshInst) MeshInstance(*m_pContext, m_arena, hImrodMeshInst);

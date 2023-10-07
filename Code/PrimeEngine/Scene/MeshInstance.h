@@ -15,32 +15,39 @@
 #include "Mesh.h"
 
 namespace PE {
-namespace Components {
 
-struct MeshInstance : public Component
-{
-	PE_DECLARE_CLASS(MeshInstance);
+	namespace Components {
 
-	// Constructor -------------------------------------------------------------
-	MeshInstance(PE::GameContext &context, PE::MemoryArena arena, Handle hMyself) ;
+		struct MeshInstance : public Component
+		{
 
-	void initFromFile(const char *assetName, const char *assetPackage,
-		int &threadOwnershipMask);
+			PE_DECLARE_CLASS(MeshInstance);
 
-	void initFromRegisteredAsset(const PE::Handle &h);
+			// Constructor -------------------------------------------------------------
+			MeshInstance(PE::GameContext& context, PE::MemoryArena arena, Handle hMyself);
 
-	virtual ~MeshInstance(){}
+			void initFromFile(const char* assetName, const char* assetPackage, int& threadOwnershipMask);
 
-	virtual void addDefaultComponents();
+			void initFromRegisteredAsset(const PE::Handle& h);
 
-	bool hasSkinWeights();
+			virtual ~MeshInstance() {}
 
-    bool m_culledOut;
-	Handle m_hAsset;
+			virtual void addDefaultComponents();
 
-	int m_skinDebugVertexId;
-};
+			void CalculateBoundingCoordinates(const char* assetName, const char* assetPackage);
 
-}; // namespace Components
+			bool hasSkinWeights();
+
+			bool m_culledOut;
+			Handle m_hAsset;
+
+			int m_skinDebugVertexId;
+
+			Array<Vector3> AABB_Coordinates;
+
+		};
+
+	}; // namespace Components
+
 }; // namespace PE
 #endif
