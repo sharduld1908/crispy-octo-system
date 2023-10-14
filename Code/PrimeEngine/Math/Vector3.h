@@ -17,7 +17,8 @@
 
 // Sibling/Children includes
 #include "MathHelpers.h"
-
+#include <iostream>
+#include <sstream>
 
 class Vector2 {
 public:
@@ -113,6 +114,20 @@ public:
 		Vector3 temp(v);
 		temp.normalize();
 		return dotProduct(temp);
+	}
+
+	std::string to_string() {
+
+		float x = this->m_x;
+		float y = this->m_y;
+		float z = this->m_z;
+
+		std::stringstream ss("");
+		ss << "vec(" << x << "," << y << "," << z << ")\n";
+		std::string res = ss.str();
+
+		return res;
+
 	}
 };
 

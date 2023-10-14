@@ -34,16 +34,12 @@ namespace PE {
 
 			virtual void addDefaultComponents();
 
-			void CalculateBoundingCoordinates(const char* assetName, const char* assetPackage);
-
 			bool hasSkinWeights();
 
 			bool m_culledOut;
 			Handle m_hAsset;
 
 			int m_skinDebugVertexId;
-
-			Array<Vector3> AABB_Coordinates;
 
 		};
 

@@ -9,12 +9,29 @@
 #include "Characters/SoldierNPCAnimationSM.h"
 #include "CharacterControl/Characters/SoldierNPCAnimationSM.h"
 #include "CharacterControlContext.h"
+
+#include "PrimeEngine/Physics/PhysicsObject.h"
+#include "PrimeEngine/Physics/PhysicsManager.h"
+
+#include <iostream>
+
 #if PE_PLAT_IS_WIN32
 #include "test.h"
 #endif
 
 using namespace PE;
 using namespace PE::Components;
+
+
+void kahitarmazza(PhysicsObject phyObj) {
+	std::cout << "Hi";
+}
+
+
+void kahitarmazza2(PhysicsObject* phyObj) {
+	std::cout << "Hi2";
+}
+
 
 namespace CharacterControl {
 
@@ -195,7 +212,7 @@ namespace CharacterControl {
 			{
 				for (int ix = 0; ix < maxX; ++ix)
 				{
-					for (int iy = 0; iy < 25; ++iy)
+					for (int iy = 0; iy < 10; ++iy)
 					{
 						PE::Handle hSN("SCENE_NODE", sizeof(SceneNode));
 						SceneNode* pMainSN = new(hSN) SceneNode(*m_pContext, m_arena, hSN);
@@ -210,6 +227,14 @@ namespace CharacterControl {
 						pImrodMeshInst->initFromFile("imrod.x_imrodmesh_mesh.mesha", "Default", m_pContext->m_gameThreadThreadOwnershipMask);
 
 						pMainSN->addComponent(hImrodMeshInst);
+
+						PE::Handle hImrodPhysicsObject = PE::Handle("PhysicsObject", sizeof(PhysicsObject));
+						PhysicsObject* pImrodPhysicsObject = new(hImrodPhysicsObject) PhysicsObject(*m_pContext, m_arena, hImrodPhysicsObject, "imrod.x_imrodmesh_mesh.mesha", "Default");
+						pImrodPhysicsObject->set_Mbase(pMainSN->m_base);
+						
+						m_pContext->getPhysicsManager()->addPhysicsObject(pImrodPhysicsObject);
+
+						pMainSN->addComponent(hImrodPhysicsObject);
 
 						RootSceneNode::Instance()->addComponent(hSN);
 					}

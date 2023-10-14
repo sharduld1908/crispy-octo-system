@@ -193,6 +193,11 @@ namespace PE {
 				context.getMeshManager()->addDefaultComponents();
 			}
 
+			{
+				Handle h("PhysicsManager", sizeof(PhysicsManager));
+				context.m_pPhysicsManager = new(h) PhysicsManager(context, arena, h);
+				context.getPhysicsManager()->addDefaultComponents();
+			}
 
 			// This will load default effects (shaders)
 			EffectManager::Instance()->loadDefaultEffects();

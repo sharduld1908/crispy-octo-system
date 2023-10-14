@@ -35,6 +35,9 @@
 #include "SH_DRAW.h"
 
 #include "PrimeEngine/Scene/DebugRenderer.h"
+#include "PrimeEngine/Physics/PhysicsManager.h"
+#include "PrimeEngine/Physics/PhysicsObject.h"
+
 #include <vector>
 
 extern int g_disableSkinRender;
@@ -200,14 +203,13 @@ namespace PE {
 
 			if (bAddAABB) {
 			
-				for (int iInst = 0; iInst < pMeshCaller->m_instances.m_size; ++iInst)
+				for (int iInst = 0; iInst < m_pContext->getPhysicsManager()->g_physicsobjs.m_size; ++iInst)
 				{
-					MeshInstance* pInst = pMeshCaller->m_instances[iInst].getObject<MeshInstance>();
+					PhysicsObject* pInst = m_pContext->getPhysicsManager()->g_physicsobjs[iInst];
+					auto aabb_box = pInst->CalculateBoundingCoordinates();
 
-					if (pInst->AABB_Coordinates.m_size == 8) {
+					if (aabb_box.size() == 8) {
 
-						SceneNode* pSN = pInst->getFirstParentByTypePtr<SceneNode>();
-						Matrix4x4 worldTransform = pSN->m_base;
 						std::vector<std::pair<int, int>> edges = {{0,1}, {0,4}, {1,3}, {1,5}, {2,6}, {2,0}, {3,2}, {3,7}, {4,5},  {4,6}, {5,7}, {6,7}};
 
 						const int numPts = 24;
@@ -218,8 +220,8 @@ namespace PE {
 
 						for (int i = 0; i < edges.size(); i++) {
 
-							Vector3 first_point = worldTransform * pInst->AABB_Coordinates[edges[i].first];
-							Vector3 second_point = worldTransform * pInst->AABB_Coordinates[edges[i].second];
+							Vector3 first_point = *aabb_box[edges[i].first];
+							Vector3 second_point = *aabb_box[edges[i].second];
 							
 							linepts[iPt++] = first_point;
 							linepts[iPt++] = color;
@@ -228,7 +230,7 @@ namespace PE {
 
 						}
 
-						DebugRenderer::Instance()->createLineMesh(true, pSN->m_base, &linepts[0].m_x, numPts, 0);// send event while the array is on the stack
+						DebugRenderer::Instance()->createLineMesh(true, pInst->m_base, &linepts[0].m_x, numPts, 0);// send event while the array is on the stack
 						
 					}
 				}

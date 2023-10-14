@@ -30,6 +30,7 @@ namespace PE {
 		struct MeshManager : Component
 		{
 			PE_DECLARE_CLASS(MeshManager);
+
 			MeshManager(PE::GameContext& context, PE::MemoryArena arena, Handle hMyself);
 
 			PE::Handle getAsset(const char* asset, const char* package, int& threadOwnershipMask);

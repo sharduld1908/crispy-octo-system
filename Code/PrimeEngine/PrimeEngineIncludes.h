@@ -98,11 +98,11 @@
 #include "Scene/Light.h"
 #include "Scene/CameraManager.h"
 #include "Scene/DebugRenderer.h"
+#include "Physics/PhysicsManager.h"
+#include "Physics/PhysicsObject.h"
 
 #include "GameObjectModel/Camera.h"
 #include "GameObjectModel/DefaultGameControls/DefaultGameControls.h"
-
-
 
 #include "Scene/DrawList.h"
 
@@ -111,7 +111,6 @@
 #include "Logging/Log.h"
 
 #include "Scene/SH_DRAW.h"
-
 
 #include "Game/Client/ClientGame.h"
 #include "Game/Server/ServerGame.h"
