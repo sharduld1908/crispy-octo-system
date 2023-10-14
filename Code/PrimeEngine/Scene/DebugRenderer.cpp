@@ -99,7 +99,7 @@ namespace PE {
 		{
 			Vector3 color(0.5f, 0.5f, 0.5f);
 
-			const int numSeg = 62;
+			const int numSeg = 5;
 			const int numPts = (numSeg + 1) * 2 * 2 * 2;
 			Vector3 linepts[numPts * 2];
 

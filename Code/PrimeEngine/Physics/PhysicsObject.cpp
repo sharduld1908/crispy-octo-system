@@ -58,18 +58,61 @@ namespace PE {
 			m_base = base;
 		}
 
-		std::vector<Vector3*> PhysicsObject::CalculateBoundingCoordinates()
+		std::vector<Vector3> PhysicsObject::CalculateBoundingCoordinates()
 		{
-			std::vector<Vector3*> aabb_box;
+			std::vector<Vector3> aabb_box;
 
-			aabb_box.push_back(&(m_base * Vector3(aabb_minmax[0], aabb_minmax[1], aabb_minmax[2])));
-			aabb_box.push_back(&(m_base * Vector3(aabb_minmax[0], aabb_minmax[1], aabb_minmax[5])));
-			aabb_box.push_back(&(m_base * Vector3(aabb_minmax[0], aabb_minmax[4], aabb_minmax[2])));
-			aabb_box.push_back(&(m_base * Vector3(aabb_minmax[0], aabb_minmax[4], aabb_minmax[5])));
-			aabb_box.push_back(&(m_base * Vector3(aabb_minmax[3], aabb_minmax[1], aabb_minmax[2])));
-			aabb_box.push_back(&(m_base * Vector3(aabb_minmax[3], aabb_minmax[1], aabb_minmax[5])));
-			aabb_box.push_back(&(m_base * Vector3(aabb_minmax[3], aabb_minmax[4], aabb_minmax[2])));
-			aabb_box.push_back(&(m_base * Vector3(aabb_minmax[3], aabb_minmax[4], aabb_minmax[5])));
+			aabb_box.push_back(m_base * Vector3(aabb_minmax[0], aabb_minmax[1], aabb_minmax[2]));
+			aabb_box.push_back(m_base * Vector3(aabb_minmax[0], aabb_minmax[1], aabb_minmax[5]));
+			aabb_box.push_back(m_base * Vector3(aabb_minmax[0], aabb_minmax[4], aabb_minmax[2]));
+			aabb_box.push_back(m_base * Vector3(aabb_minmax[0], aabb_minmax[4], aabb_minmax[5]));
+			aabb_box.push_back(m_base * Vector3(aabb_minmax[3], aabb_minmax[1], aabb_minmax[2]));
+			aabb_box.push_back(m_base * Vector3(aabb_minmax[3], aabb_minmax[1], aabb_minmax[5]));
+			aabb_box.push_back(m_base * Vector3(aabb_minmax[3], aabb_minmax[4], aabb_minmax[2]));
+			aabb_box.push_back(m_base * Vector3(aabb_minmax[3], aabb_minmax[4], aabb_minmax[5]));
+
+			return aabb_box;
+		}
+
+		PE_IMPLEMENT_CLASS1(SoldierPhysicsObject, PhysicsObject);
+
+		SoldierPhysicsObject::SoldierPhysicsObject(PE::GameContext& context, PE::MemoryArena arena, Handle hMyself, const char* assetName, const char* assetPackage)
+			: PhysicsObject(context, arena, hMyself, assetName, assetPackage) 
+		{
+			radius = 0;
+		}
+
+		void SoldierPhysicsObject::CalculateSphere()
+		{
+			centre = m_base * Vector3(0,0.5,0);
+			radius = 0.5;
+
+			aabb_minmax[0] = centre.m_x + radius;
+			aabb_minmax[1] = centre.m_y + radius;
+			aabb_minmax[2] = centre.m_z + radius;
+
+			aabb_minmax[3] = centre.m_x - radius;
+			aabb_minmax[4] = centre.m_y - radius;
+			aabb_minmax[5] = centre.m_z - radius;
+
+		}
+
+		SoldierPhysicsObject::~SoldierPhysicsObject()
+		{
+		}
+
+		std::vector<Vector3> SoldierPhysicsObject::CalculateBoundingCoordinates()
+		{
+			std::vector<Vector3> aabb_box;
+
+			aabb_box.push_back(Vector3(aabb_minmax[0], aabb_minmax[1], aabb_minmax[2]));
+			aabb_box.push_back(Vector3(aabb_minmax[0], aabb_minmax[1], aabb_minmax[5]));
+			aabb_box.push_back(Vector3(aabb_minmax[0], aabb_minmax[4], aabb_minmax[2]));
+			aabb_box.push_back(Vector3(aabb_minmax[0], aabb_minmax[4], aabb_minmax[5]));
+			aabb_box.push_back(Vector3(aabb_minmax[3], aabb_minmax[1], aabb_minmax[2]));
+			aabb_box.push_back(Vector3(aabb_minmax[3], aabb_minmax[1], aabb_minmax[5]));
+			aabb_box.push_back(Vector3(aabb_minmax[3], aabb_minmax[4], aabb_minmax[2]));
+			aabb_box.push_back(Vector3(aabb_minmax[3], aabb_minmax[4], aabb_minmax[5]));
 
 			return aabb_box;
 		}

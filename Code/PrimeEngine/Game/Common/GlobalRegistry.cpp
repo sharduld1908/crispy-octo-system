@@ -60,6 +60,7 @@ namespace PE {
 					PE::Components::PESSEH_DRAW_Z_ONLY::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::Effect::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::PhysicsObject::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
+					PE::Components::SoldierPhysicsObject::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 					PE::Components::PhysicsManager::InitializeAndRegister(pLuaEnv, pRegistry, setLuaMetaDataOnly);
 
 #if APIABSTRACTION_D3D9 | APIABSTRACTION_D3D11

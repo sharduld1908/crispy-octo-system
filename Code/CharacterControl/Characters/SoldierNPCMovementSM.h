@@ -52,7 +52,7 @@ namespace CharacterControl {
 			};
 
 
-			SoldierNPCMovementSM(PE::GameContext& context, PE::MemoryArena arena, PE::Handle hMyself);
+			SoldierNPCMovementSM(PE::GameContext& context, PE::MemoryArena arena, PE::Handle hMyself, int phy_index);
 
 			//////////////////////////////////////////////////////////////////////////
 			// utility
@@ -82,6 +82,7 @@ namespace CharacterControl {
 			// State
 			Vector3 m_targetPostion;
 			States m_state;
+			int m_phy_index;
 		};
 
 	};

@@ -206,11 +206,12 @@ namespace PE {
 				for (int iInst = 0; iInst < m_pContext->getPhysicsManager()->g_physicsobjs.m_size; ++iInst)
 				{
 					PhysicsObject* pInst = m_pContext->getPhysicsManager()->g_physicsobjs[iInst];
+
 					auto aabb_box = pInst->CalculateBoundingCoordinates();
 
 					if (aabb_box.size() == 8) {
 
-						std::vector<std::pair<int, int>> edges = {{0,1}, {0,4}, {1,3}, {1,5}, {2,6}, {2,0}, {3,2}, {3,7}, {4,5},  {4,6}, {5,7}, {6,7}};
+						std::vector<std::pair<int, int>> edges = { {0,1}, {0,4}, {1,3}, {1,5}, {2,6}, {2,0}, {3,2}, {3,7}, {4,5},  {4,6}, {5,7}, {6,7} };
 
 						const int numPts = 24;
 						int iPt = 0;
@@ -220,9 +221,9 @@ namespace PE {
 
 						for (int i = 0; i < edges.size(); i++) {
 
-							Vector3 first_point = *aabb_box[edges[i].first];
-							Vector3 second_point = *aabb_box[edges[i].second];
-							
+							Vector3 first_point = aabb_box[edges[i].first];
+							Vector3 second_point = aabb_box[edges[i].second];
+
 							linepts[iPt++] = first_point;
 							linepts[iPt++] = color;
 							linepts[iPt++] = second_point;
@@ -231,8 +232,10 @@ namespace PE {
 						}
 
 						DebugRenderer::Instance()->createLineMesh(true, pInst->m_base, &linepts[0].m_x, numPts, 0);// send event while the array is on the stack
-						
+
 					}
+					
+
 				}
 			}
 

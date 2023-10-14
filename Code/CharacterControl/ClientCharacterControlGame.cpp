@@ -80,7 +80,7 @@ namespace CharacterControl {
 				m_pContext->getGameObjectManager()->addComponent(hGOMAddon);
 			}
 
-			bool spawnALotOfSoldiersForGpuAnim = true;
+			bool spawnALotOfSoldiersForGpuAnim = false;
 
 			//create tank controls that will be enabled if tank is activated
 			{
@@ -204,7 +204,7 @@ namespace CharacterControl {
 
 			m_pContext->getGPUScreen()->AcquireRenderContextOwnership(m_pContext->m_gameThreadThreadOwnershipMask);
 
-			bool spawnALotOfMeshes = true;
+			bool spawnALotOfMeshes = false;
 
 			int maxX = 10; // maybe need more to get framerate lower
 

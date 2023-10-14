@@ -5,6 +5,9 @@
 #include "SoldierNPCMovementSM.h"
 #include "SoldierNPCAnimationSM.h"
 #include "SoldierNPC.h"
+
+#include "PrimeEngine/Physics/PhysicsManager.h"
+
 using namespace PE::Components;
 using namespace PE::Events;
 using namespace CharacterControl::Events;
@@ -31,8 +34,8 @@ namespace CharacterControl {
 		PE_IMPLEMENT_CLASS1(SoldierNPCMovementSM, Component);
 
 
-		SoldierNPCMovementSM::SoldierNPCMovementSM(PE::GameContext& context, PE::MemoryArena arena, PE::Handle hMyself)
-			: Component(context, arena, hMyself)
+		SoldierNPCMovementSM::SoldierNPCMovementSM(PE::GameContext& context, PE::MemoryArena arena, PE::Handle hMyself, int phy_index)
+			: Component(context, arena, hMyself), m_phy_index(phy_index)
 			, m_state(STANDING)
 		{}
 
@@ -95,6 +98,7 @@ namespace CharacterControl {
 				if (pSN)
 				{
 					Vector3 curPos = pSN->m_base.getPos();
+
 					float dsqr = (m_targetPostion - curPos).lengthSqr();
 
 					bool reached = true;
@@ -117,6 +121,7 @@ namespace CharacterControl {
 						// instantaneous turn
 						pSN->m_base.turnInDirection(dir, 3.1415f);
 						pSN->m_base.setPos(curPos + dir * dist);
+
 					}
 
 					if (reached)
@@ -151,8 +156,16 @@ namespace CharacterControl {
 							}
 						}
 					}
+
+					auto soldier_phyobj = ((SoldierPhysicsObject*)m_pContext->getPhysicsManager()->g_physicsobjs[m_phy_index]);
+					
+					soldier_phyobj->set_Mbase(pSN->m_base);
+					soldier_phyobj->CalculateSphere();
+
 				}
+
 			}
+		
 		}
 
 	}

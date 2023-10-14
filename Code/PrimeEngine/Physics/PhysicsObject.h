@@ -25,9 +25,26 @@ namespace PE {
 
 			void set_Mbase(Matrix4x4 base);
 
-			std::vector<Vector3*> CalculateBoundingCoordinates();
+			virtual std::vector<Vector3> CalculateBoundingCoordinates();
 
 			virtual ~PhysicsObject();
+		};
+
+		class SoldierPhysicsObject : public PhysicsObject {
+		public:
+
+			PE_DECLARE_CLASS(SoldierPhysicsObject);
+
+			SoldierPhysicsObject(PE::GameContext& context, PE::MemoryArena arena, Handle hMyself, const char* assetName, const char* assetPackage);
+
+			void CalculateSphere();
+
+			virtual std::vector<Vector3> CalculateBoundingCoordinates() override;
+
+			virtual ~SoldierPhysicsObject();
+
+			float radius;
+			Vector3 centre;
 		};
 	}
 }

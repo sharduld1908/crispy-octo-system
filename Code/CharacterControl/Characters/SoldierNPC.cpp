@@ -4,6 +4,8 @@
 #include "PrimeEngine/Scene/SkeletonInstance.h"
 #include "PrimeEngine/Scene/MeshInstance.h"
 #include "PrimeEngine/Scene/RootSceneNode.h"
+#include "PrimeEngine/Physics/PhysicsObject.h"
+#include "PrimeEngine/Physics/PhysicsManager.h"
 
 #include "SoldierNPC.h"
 #include "SoldierNPCAnimationSM.h"
@@ -61,7 +63,6 @@ namespace CharacterControl {
 			pMainSN->m_base.setV(pEvt->m_v);
 			pMainSN->m_base.setN(pEvt->m_n);
 
-
 			RootSceneNode::Instance()->addComponent(hSN);
 
 			// add the scene node as component of soldier without any handlers. this is just data driven way to locate scnenode for soldier's components
@@ -111,6 +112,12 @@ namespace CharacterControl {
 
 				pMeshInstance->initFromFile(pEvt->m_meshFilename, pEvt->m_package, pEvt->m_threadOwnershipMask);
 
+				PE::Handle hPhysicsObject = PE::Handle("SoldierPhysicsObject", sizeof(SoldierPhysicsObject));
+				SoldierPhysicsObject* pPhysicsObject = new(hPhysicsObject) SoldierPhysicsObject(*m_pContext, m_arena, hPhysicsObject, pEvt->m_meshFilename, pEvt->m_package);
+				pPhysicsObject->set_Mbase(pMainSN->m_base);
+
+				m_pContext->getPhysicsManager()->addPhysicsObject(pPhysicsObject);
+
 				pSkelInst->addComponent(hMeshInstance);
 
 				// add skin to scene node
@@ -145,8 +152,9 @@ namespace CharacterControl {
 
 #if 1
 			// add movement state machine to soldier npc
+			int phy_index = m_pContext->getPhysicsManager()->g_physicsobjs.m_size - 1;
 			PE::Handle hSoldierMovementSM("SoldierNPCMovementSM", sizeof(SoldierNPCMovementSM));
-			SoldierNPCMovementSM* pSoldierMovementSM = new(hSoldierMovementSM) SoldierNPCMovementSM(*m_pContext, m_arena, hSoldierMovementSM);
+			SoldierNPCMovementSM* pSoldierMovementSM = new(hSoldierMovementSM) SoldierNPCMovementSM(*m_pContext, m_arena, hSoldierMovementSM, phy_index);
 			pSoldierMovementSM->addDefaultComponents();
 
 			// add it to soldier NPC

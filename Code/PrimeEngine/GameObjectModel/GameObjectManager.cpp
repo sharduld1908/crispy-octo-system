@@ -13,6 +13,8 @@
 #include "PrimeEngine/Scene/Skeleton.h"
 #include "PrimeEngine/Scene/MeshInstance.h"
 #include "PrimeEngine/Scene/SkeletonInstance.h"
+#include "PrimeEngine/Physics/PhysicsObject.h"
+#include "PrimeEngine/Physics/PhysicsManager.h"
 
 namespace PE {
 namespace Components {
@@ -326,6 +328,15 @@ void GameObjectManager::do_CREATE_MESH(Events::Event *pEvt)
 				pSN->m_base.setU(pRealEvent->m_u);
 				pSN->m_base.setV(pRealEvent->m_v);
 				pSN->m_base.setN(pRealEvent->m_n);
+
+				PE::Handle hPhysicsObject = PE::Handle("PhysicsObject", sizeof(PhysicsObject));
+				PhysicsObject* pPhysicsObject = new(hPhysicsObject) PhysicsObject(*m_pContext, m_arena, hPhysicsObject, pRealEvent->m_meshFilename, pRealEvent->m_package);
+				pPhysicsObject->set_Mbase(pSN->m_base);
+
+				m_pContext->getPhysicsManager()->addPhysicsObject(pPhysicsObject);
+
+				pSN->addComponent(hPhysicsObject);
+
 			}
 			else
 			{

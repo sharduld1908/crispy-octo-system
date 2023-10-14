@@ -101,6 +101,7 @@ namespace CharacterControl {
 					}
 				}
 			}
+
 			return NULL;
 		}
 
@@ -144,6 +145,14 @@ namespace CharacterControl {
 			pTankController->addDefaultComponents();
 
 			addComponent(hTankController);
+
+			PE::Handle hImrodPhysicsObject = PE::Handle("PhysicsObject", sizeof(PhysicsObject));
+			PhysicsObject* pImrodPhysicsObject = new(hImrodPhysicsObject) PhysicsObject(*m_pContext, m_arena, hImrodPhysicsObject, "kingtiger.x_main_mesh.mesha", "Default");
+			pImrodPhysicsObject->set_Mbase(pSN->m_base);
+
+			m_pContext->getPhysicsManager()->addPhysicsObject(pImrodPhysicsObject);
+
+			pSN->addComponent(hImrodPhysicsObject);
 
 			// add the same scene node to tank controller
 			static int alllowedEventsToPropagate[] = { 0 }; // we will pass empty array as allowed events to propagate so that when we add
