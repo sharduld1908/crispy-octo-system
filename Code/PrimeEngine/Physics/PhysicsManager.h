@@ -8,9 +8,11 @@
 #include "PrimeEngine/Math/Vector3.h"
 
 #include "PhysicsObject.h"
+
 #include <iostream>
 
 #include <vector>
+#include <unordered_map>
 
 namespace PE {
 
@@ -19,6 +21,12 @@ namespace PE {
 		class PhysicsManager : public Component {
 		public:
 
+			struct CollisionData {
+				bool collided;
+				float intersection_dist;
+				Vector3 dir;
+			};
+
 			PE_DECLARE_CLASS(PhysicsManager);
 
 			PhysicsManager(PE::GameContext& context, PE::MemoryArena arena, Handle hMyself);
@@ -26,6 +34,11 @@ namespace PE {
 			Array<PhysicsObject*,1> g_physicsobjs;
 
 			void addPhysicsObject(PhysicsObject* phyObj);
+
+			CollisionData checkCollision(int checkingFor, std::vector<int> checkingWith);
+			void checkCollisionWithObject(PhysicsObject* checkingFor, PhysicsObject* checkingWith, CollisionData& collision);
+			bool isPointInsideCuboid(PhysicsObject* p2, Vector3& point);
+
 		};
 	}
 }

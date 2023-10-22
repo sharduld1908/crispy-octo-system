@@ -8,6 +8,7 @@
 #include "PrimeEngine/Scene/Mesh.h"
 
 namespace PE {
+
 	namespace Components {
 
 		PE_IMPLEMENT_CLASS1(PhysicsObject, Component);
@@ -82,10 +83,13 @@ namespace PE {
 			radius = 0;
 		}
 
-		void SoldierPhysicsObject::CalculateSphere()
+		void SoldierPhysicsObject::CalculateSphere(Vector3 dist)
 		{
-			centre = m_base * Vector3(0,0.5,0);
+			centre = Vector3(m_base.getPos().m_x, m_base.getPos().m_y + 0.5, m_base.getPos().m_z);
 			radius = 0.5;
+
+			dist.normalize();
+			ptToCheck = centre + dist*radius;
 
 			aabb_minmax[0] = centre.m_x + radius;
 			aabb_minmax[1] = centre.m_y + radius;
@@ -93,12 +97,9 @@ namespace PE {
 
 			aabb_minmax[3] = centre.m_x - radius;
 			aabb_minmax[4] = centre.m_y - radius;
+
 			aabb_minmax[5] = centre.m_z - radius;
 
-		}
-
-		SoldierPhysicsObject::~SoldierPhysicsObject()
-		{
 		}
 
 		std::vector<Vector3> SoldierPhysicsObject::CalculateBoundingCoordinates()
@@ -115,6 +116,10 @@ namespace PE {
 			aabb_box.push_back(Vector3(aabb_minmax[3], aabb_minmax[4], aabb_minmax[5]));
 
 			return aabb_box;
+		}
+
+		SoldierPhysicsObject::~SoldierPhysicsObject()
+		{
 		}
 
 	}

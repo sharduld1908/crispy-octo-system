@@ -83,6 +83,7 @@ namespace CharacterControl {
 			Vector3 m_targetPostion;
 			States m_state;
 			int m_phy_index;
+			bool gravity;
 		};
 
 	};

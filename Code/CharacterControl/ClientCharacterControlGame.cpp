@@ -268,6 +268,8 @@ namespace CharacterControl {
 
 			m_pContext->getGPUScreen()->ReleaseRenderContextOwnership(m_pContext->m_gameThreadThreadOwnershipMask);
 
+			m_pContext->getLuaEnvironment()->runString("LevelLoader.loadLevel('hw4.x_level.levela','HW4')");
+
 #if PE_PLAT_IS_PSVITA // do it for ps3 becasue right now communication between pyClient and ps3 is not working
 			//m_pContext->getLuaEnvironment()->runString("LevelLoader.loadLevel('ccontrollvl0.x_level.levela', 'CharacterControl')");
 #endif

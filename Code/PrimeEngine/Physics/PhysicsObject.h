@@ -7,6 +7,7 @@
 #include "PrimeEngine/Math/Vector3.h"
 #include "PrimeEngine/Math/Matrix4x4.h"
 #include "PrimeEngine/PrimitiveTypes/PrimitiveTypes.h"
+#include "PrimeEngine/Utils/PEMap.h"
 
 #include <vector>
 
@@ -37,7 +38,7 @@ namespace PE {
 
 			SoldierPhysicsObject(PE::GameContext& context, PE::MemoryArena arena, Handle hMyself, const char* assetName, const char* assetPackage);
 
-			void CalculateSphere();
+			void CalculateSphere(Vector3 dist);
 
 			virtual std::vector<Vector3> CalculateBoundingCoordinates() override;
 
@@ -45,6 +46,7 @@ namespace PE {
 
 			float radius;
 			Vector3 centre;
+			Vector3 ptToCheck;
 		};
 	}
 }

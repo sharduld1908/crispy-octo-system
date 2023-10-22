@@ -37,7 +37,7 @@ namespace CharacterControl {
 		SoldierNPCMovementSM::SoldierNPCMovementSM(PE::GameContext& context, PE::MemoryArena arena, PE::Handle hMyself, int phy_index)
 			: Component(context, arena, hMyself), m_phy_index(phy_index)
 			, m_state(STANDING)
-		{}
+			, gravity(false) {}
 
 		SceneNode* SoldierNPCMovementSM::getParentsSceneNode()
 		{
@@ -93,79 +93,109 @@ namespace CharacterControl {
 		{
 			if (m_state == WALKING_TO_TARGET)
 			{
+
+				auto plane_collided_data = m_pContext->getPhysicsManager()->checkCollision(m_phy_index, { 12,13,16,18 });
 				// see if parent has scene node component
 				SceneNode* pSN = getParentsSceneNode();
-				if (pSN)
+				Vector3 curPos = pSN->m_base.getPos();
+				
+				if (curPos.m_x >= 12.90 && curPos.m_z >= 22.90) 
 				{
-					Vector3 curPos = pSN->m_base.getPos();
-
-					float dsqr = (m_targetPostion - curPos).lengthSqr();
-
-					bool reached = true;
-					if (dsqr > 0.01f)
-					{
-						// not at the spot yet
-						Event_UPDATE* pRealEvt = (Event_UPDATE*)(pEvt);
-						static float speed = 1.4f;
-						float allowedDisp = speed * pRealEvt->m_frameTime;
-
-						Vector3 dir = (m_targetPostion - curPos);
-						dir.normalize();
-						float dist = sqrt(dsqr);
-						if (dist > allowedDisp)
-						{
-							dist = allowedDisp; // can move up to allowedDisp
-							reached = false; // not reaching destination yet
-						}
-
-						// instantaneous turn
-						pSN->m_base.turnInDirection(dir, 3.1415f);
-						pSN->m_base.setPos(curPos + dir * dist);
-
-					}
-
-					if (reached)
-					{
-						m_state = STANDING;
-
-						// target has been reached. need to notify all same level state machines (components of parent)
-						{
-							PE::Handle h("SoldierNPCMovementSM_Event_TARGET_REACHED", sizeof(SoldierNPCMovementSM_Event_TARGET_REACHED));
-							Events::SoldierNPCMovementSM_Event_TARGET_REACHED* pOutEvt = new(h) SoldierNPCMovementSM_Event_TARGET_REACHED();
-
-							PE::Handle hParent = getFirstParentByType<Component>();
-							if (hParent.isValid())
-							{
-								hParent.getObject<Component>()->handleEvent(pOutEvt);
-							}
-
-							// release memory now that event is processed
-							h.release();
-						}
-
-						if (m_state == STANDING)
-						{
-							// no one has modified our state based on TARGET_REACHED callback
-							// this means we are not going anywhere right now
-							// so can send event to animation state machine to stop
-							{
-								Events::SoldierNPCAnimSM_Event_STOP evt;
-
-								SoldierNPC* pSol = getFirstParentByTypePtr<SoldierNPC>();
-								pSol->getFirstComponent<PE::Components::SceneNode>()->handleEvent(&evt);
-							}
-						}
-					}
-
+					gravity = true;
+					Vector3 gravity(0, -0.7, 0);
+					pSN->m_base.setPos(curPos + gravity);
+				
 					auto soldier_phyobj = ((SoldierPhysicsObject*)m_pContext->getPhysicsManager()->g_physicsobjs[m_phy_index]);
-					
+
 					soldier_phyobj->set_Mbase(pSN->m_base);
-					soldier_phyobj->CalculateSphere();
+					soldier_phyobj->CalculateSphere(Vector3(0,0,0));	
+				}
+				
+				if(!gravity) 
+				{
+
+					if (pSN)
+					{
+						Vector3 curPos = pSN->m_base.getPos();
+						float dsqr = (m_targetPostion - curPos).lengthSqr();
+
+						// Currently the nazi car exists at index 8 in PhysicsManager.
+						// To check collision of curr soldier with the nazi car, I have passed the index statically.
+						// This can be made dynamic in the Physics manager by maintaining a data structure in the Physics Manager itself.
+						auto collided_data = m_pContext->getPhysicsManager()->checkCollision(m_phy_index, { 8 });
+
+						bool reached = true;
+						if (dsqr > 0.01f)
+						{
+							// not at the spot yet
+							Event_UPDATE* pRealEvt = (Event_UPDATE*)(pEvt);
+							static float speed = 1.2f;
+							float allowedDisp = speed * pRealEvt->m_frameTime;
+
+							Vector3 dir = (m_targetPostion - curPos);
+							dir.normalize();
+
+							auto soldier_phyobj = ((SoldierPhysicsObject*)m_pContext->getPhysicsManager()->g_physicsobjs[m_phy_index]);
+
+							soldier_phyobj->set_Mbase(pSN->m_base);
+							soldier_phyobj->CalculateSphere(dir);
+
+							float dist = sqrt(dsqr);
+							if (dist > allowedDisp)
+							{
+								dist = allowedDisp; // can move up to allowedDisp
+								reached = false; // not reaching destination yet
+							}
+
+							// instantaneous turn
+							pSN->m_base.turnInDirection(dir, 3.1415f);
+							pSN->m_base.setPos(curPos + dir * dist);
+
+							if (collided_data.collided)
+							{
+								pSN->m_base.setPos((curPos + dir * dist) + (collided_data.dir * collided_data.intersection_dist * 0.5));
+							}
+
+						}
+
+						if (reached)
+						{
+							m_state = STANDING;
+
+							// target has been reached. need to notify all same level state machines (components of parent)
+							{
+								PE::Handle h("SoldierNPCMovementSM_Event_TARGET_REACHED", sizeof(SoldierNPCMovementSM_Event_TARGET_REACHED));
+								Events::SoldierNPCMovementSM_Event_TARGET_REACHED* pOutEvt = new(h) SoldierNPCMovementSM_Event_TARGET_REACHED();
+
+								PE::Handle hParent = getFirstParentByType<Component>();
+								if (hParent.isValid())
+								{
+									hParent.getObject<Component>()->handleEvent(pOutEvt);
+								}
+
+								// release memory now that event is processed
+								h.release();
+							}
+
+							if (m_state == STANDING)
+							{
+								// no one has modified our state based on TARGET_REACHED callback
+								// this means we are not going anywhere right now
+								// so can send event to animation state machine to stop
+								{
+									Events::SoldierNPCAnimSM_Event_STOP evt;
+
+									SoldierNPC* pSol = getFirstParentByTypePtr<SoldierNPC>();
+									pSol->getFirstComponent<PE::Components::SceneNode>()->handleEvent(&evt);
+								}
+							}
+						}
+					}
 
 				}
 
 			}
-		
+
 		}
 
 	}
