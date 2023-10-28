@@ -64,7 +64,7 @@ namespace CharacterControl {
 				m_pContext->getGameObjectManager()->addComponent(hGOMAddon);
 			}
 
-			bool spawnALotOfSoldiersForGpuAnim = false;
+			bool spawnALotOfSoldiersForGpuAnim = true;
 
 			//create tank controls that will be enabled if tank is activated
 			{
@@ -192,7 +192,7 @@ namespace CharacterControl {
     
 			m_pContext->getGPUScreen()->AcquireRenderContextOwnership(m_pContext->m_gameThreadThreadOwnershipMask);
 	
-			bool spawnALotOfMeshes = true;
+			bool spawnALotOfMeshes = false;
     
 			int maxX = 10; // maybe need more to get framerate lower
     
@@ -247,6 +247,8 @@ namespace CharacterControl {
 			//and then reacquire once lua is done
 
 			m_pContext->getGPUScreen()->ReleaseRenderContextOwnership(m_pContext->m_gameThreadThreadOwnershipMask);
+
+			m_pContext->getLuaEnvironment()->runString("LevelLoader.loadLevel('nav_mesh.x_level.levela','NavMesh')");
 
 		#if PE_PLAT_IS_PSVITA // do it for ps3 becasue right now communication between pyClient and ps3 is not working
 			//m_pContext->getLuaEnvironment()->runString("LevelLoader.loadLevel('ccontrollvl0.x_level.levela', 'CharacterControl')");

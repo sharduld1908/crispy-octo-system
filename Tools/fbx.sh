@@ -4,4 +4,3 @@ source ./setenv.sh
 shopt -s expand_aliases
 
 pepython -i FBX/ImportScene.py "$@"
-
